@@ -1,29 +1,29 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloGrid />
-  </div>
+    <div id="app">
+        <img alt="Vue logo" src="./assets/logo.png" />
+        <HelloGrid />
+    </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloGrid from './components/HelloGrid.vue';
+    import { Component, Vue } from "vue-property-decorator"
+    import HelloGrid from "./components/HelloGrid.vue"
 
-@Component({
-  components: {
-    HelloGrid,
-  },
-})
-export default class App extends Vue {}
+    @Component({
+        components: {
+            HelloGrid
+        }
+    })
+    export default class App extends Vue {}
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    #app {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 60px;
+    }
 </style>
