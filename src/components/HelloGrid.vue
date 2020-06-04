@@ -3,17 +3,20 @@
         <h1>Grid Sandbox</h1>
         <button @click.prevent="getData">Get Data</button>
         <grid
+            v-if="gridData && gridData.length > 0"
             :data="gridData"
             :columns="gridColumns"
             :pageSpan="gridPageRange"
+            rowIdentifier="Atomic_Number"
         />
     </div>
 </template>
 
 <script lang="ts">
-    import { Component, Prop, Vue } from "vue-property-decorator"
+    import { Component, Vue } from "vue-property-decorator"
 
     import grid from "./grid.vue"
+    import periodic from "../assets/periodicTable.json"
 
     @Component({
         components: {
@@ -21,13 +24,23 @@
         }
     })
     export default class HelloGrid extends Vue {
-        gridData: any[] = []
+        gridData: Array<any> = []
         gridColumns: string[] = []
         gridPageRange = 3
 
         //functions
-        GetData() {
-            this.gridData = []
+        getData() {
+            const data = periodic
+            this.gridData = data
+
+            const columns = [
+                "Symbol",
+                "Name",
+                "Atomic_Number",
+                "Melting_Point",
+                "Boiling_Point"
+            ]
+            this.gridColumns = columns
         }
     }
 </script>
@@ -49,3 +62,5 @@
         color: #42b983;
     }
 </style>
+//Cannot find module '../assets/periodicTable.json'. Consider using '--//' to
+import module with '.json' extension

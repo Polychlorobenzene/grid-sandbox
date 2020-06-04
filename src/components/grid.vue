@@ -9,7 +9,6 @@
                 id="firstPage"
                 @click.prevent="getPageResults(1)"
             >
-                <!--<i class="fas fa-angle-double-left"></i>-->
                 <font-awesome-icon
                     :icon="['fas', 'angle-double-left']"
                     title="First Page"
@@ -85,9 +84,9 @@
         <table>
             <thead>
                 <tr>
-                    <th v-if="columns.length > 0"></th>
+                    <th v-if="dataColumns.length > 0"></th>
                     <th
-                        v-for="key in columns"
+                        v-for="key in dataColumns"
                         :key="key"
                         @click="sortBy(key)"
                         :class="{ active: sortKey == key }"
@@ -101,12 +100,22 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="entry in displayData" :key="entry['rowNumber']">
+                <tr
+                    v-for="entry in displayData"
+                    :key="entry[`${rowIdentifier}`]"
+                    :id="'row' + entry[`${rowIdentifier}`]"
+                    @click="selectRow(entry[`${rowIdentifier}`])"
+                >
                     <td>
-                        <input type="checkbox" :id="entry['rowNumber']" />
+                        <input
+                            type="checkbox"
+                            :id="entry[`${rowIdentifier}`]"
+                        />
                     </td>
 
-                    <td v-for="key in columns" :key="key">{{ entry[key] }}</td>
+                    <td v-for="key in dataColumns" :key="key">
+                        {{ entry[key] }}
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -130,11 +139,14 @@
         }
     })
     export default class DataGrid extends Vue {
-        @Prop() private data!: []
+        @Prop() private data!: [{}]
+        @Prop() private rowIdentifier!: number
         @Prop() private columns!: string[]
         @Prop() private pageSpan!: number
         //data
         timer: number | null = null
+        selectedRowId: number | null = null
+        dataColumnsStaging: string[] = []
         filterTextBuffer = ""
         private filterTextDelayed: string | null = null
         filteredData: any[] = []
@@ -145,6 +157,7 @@
         sort(key: string) {
             this.sortOrders[key] = 1
         }
+        isDetailsView = false
         //functions
         sortBy(key: string) {
             //Changing sortKey to empty string before assigning the value
@@ -172,12 +185,47 @@
                 this.filterText = this.filterTextBuffer
             }, 300)
         }
+        selectRow(id: number) {
+            //debugger
+            const row = document.getElementById("row" + id)
+            const checkbox: HTMLInputElement = document.getElementById(
+                String(id)
+            ) as HTMLInputElement
+            if (checkbox && row) {
+                if (!checkbox.checked) {
+                    row.setAttribute("class", "highlight")
+                    this.selectedRowId = id
+                    this.isDetailsView = true
+                    checkbox.checked = true
+                } else {
+                    row.removeAttribute("class")
+                    this.selectedRowId = null
+                    checkbox.checked = false
+                }
+            }
+        }
         //getters and setters
         get filterText(): string | null {
             return this.filterTextDelayed
         }
         set filterText(value: string | null) {
             this.filterTextDelayed = value
+        }
+        get dataColumns(): string[] {
+            if (this.columns && this.columns.length > 0) {
+                this.dataColumnsStaging = this.columns
+            } else if (
+                this.data.length > 0 &&
+                this.dataColumnsStaging.length < 1
+            ) {
+                const fields: string[] = []
+                const record = this.data[0]
+                Object.keys(record).forEach((k: string) => {
+                    fields.push(k)
+                })
+                this.dataColumnsStaging = fields
+            }
+            return this.dataColumnsStaging
         }
         get displayData(): any[] {
             const filterKey = this.filterText && this.filterText.toLowerCase()
@@ -193,7 +241,7 @@
                 this.filteredData = this.filteredData.filter((o) => {
                     return Object.keys(o)
                         .filter((k) => {
-                            return this.columns.includes(k)
+                            return this.dataColumns.includes(k)
                         })
                         .some((k) => {
                             return (
@@ -205,11 +253,24 @@
                 })
             }
             if (this.sortKey.length > 0) {
-                sortedData = this.filteredData.slice().sort(function(a, b) {
-                    a = a[key]
-                    b = b[key]
-                    return (a === b ? 0 : a > b ? 1 : -1) * order
-                })
+                if (this.browserSupportsLocaleCompare) {
+                    const collator = new Intl.Collator("en", {
+                        numeric: true,
+                        sensitivity: "base"
+                    })
+                    sortedData = this.filteredData
+                        .slice()
+                        .sort((a, b) => collator.compare(a[key], b[key]))
+                } else {
+                    sortedData = this.filteredData.slice().sort(function(a, b) {
+                        a = a[key]
+                        b = b[key]
+                        return (a === b ? 0 : a > b ? 1 : -1) * order
+                    })
+                }
+                if (order < 0) {
+                    sortedData = sortedData.reverse()
+                }
             } else {
                 sortedData = this.filteredData
             }
@@ -264,10 +325,18 @@
         get isLastPage() {
             return this.currentPage === this.pageCount
         }
+        get browserSupportsLocaleCompare() {
+            try {
+                "browser".localeCompare("does-not-like", "i")
+            } catch (e) {
+                return e.name === "RangeError"
+            }
+            return false
+        }
 
         //lifecycle
         mounted() {
-            this.columns.forEach((key) => {
+            this.dataColumns.forEach((key) => {
                 this.sortOrders[key] = -1
             })
         }
@@ -276,6 +345,13 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .highlight {
+        background-color: yellow;
+    }
+
+    tr.highlight td {
+        background-color: yellow;
+    }
     .page-span {
         display: inline-block;
         min-width: 100px;
