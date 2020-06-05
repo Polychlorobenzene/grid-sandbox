@@ -117,6 +117,14 @@
                             :id="entry[`${rowIdentifier}`]"
                             @click="selectRow(entry[`${rowIdentifier}`])"
                         />
+                        <a
+                            href
+                            :id="'edit-' + entry[`${rowIdentifier}`]"
+                            @click.stop.prevent="
+                                editRecord(entry[`${rowIdentifier}`])
+                            "
+                            >edit</a
+                        >
                     </td>
 
                     <td v-for="key in dataColumns" :key="key">
@@ -125,8 +133,12 @@
                 </tr>
             </tbody>
         </table>
-        <div class="delete" v-if="isRowSelected">
-            <button>Delete Selected Rows</button>
+        <div id="details" v-if="isRowEdit === true">
+            <grid-detail
+                :record="selectedRecord"
+                :fieldsToBind="dataColumns"
+                @persisted-record="persistDetails"
+            ></grid-detail>
         </div>
     </div>
 </template>
@@ -135,12 +147,12 @@
     /* eslint-disable @typescript-eslint/no-explicit-any */
     import { Component, Prop, Vue } from "vue-property-decorator"
 
-    //import DataGridTable from "./DataGridTable.vue"
+    import gridDetail from "./gridDetail.vue"
     import GridPage from "../models/GridPage"
 
     @Component({
         components: {
-            // DataGridTable
+            gridDetail
         },
         filters: {
             capitalize(str: string) {
@@ -155,8 +167,9 @@
         @Prop() private pageSpan!: number
         //data
         timer: number | null = null
-        selectedRowId: number | null = null
+        selectedRowIds: number[] = []
         dataColumnsStaging: string[] = []
+        selectedRecordStaging: Record<string, any> | null = null
         filterTextBuffer = ""
         private filterTextDelayed: string | null = null
         filteredData: any[] = []
@@ -164,11 +177,52 @@
         currentPage = 1
         sortOrders: any = {}
         sortKey = ""
+        isRowEdit = false
+        rowIdToEdit: number | null = null
+        //functions
+        editRecord(id: number) {
+            //debugger
+            if (this.isRowEdit && this.rowIdToEdit !== id) {
+                if (
+                    !confirm(
+                        "You are currently editing a record. Do you wish to continue?"
+                    )
+                ) {
+                    return
+                } else {
+                    const oldLink = document.getElementById(
+                        "edit-" + this.rowIdToEdit
+                    )
+                    if (oldLink) {
+                        oldLink.innerText = "edit"
+                        this.isRowEdit = false
+                        this.rowIdToEdit = null
+                        this.selectedRecord = null
+                        this.selectedRecordStaging = null
+                    }
+                }
+            }
+            const link = document.getElementById("edit-" + id)
+            if (link) {
+                if (link.innerHTML === "edit") {
+                    link.innerText = "editing"
+                    this.isRowEdit = true
+                    this.rowIdToEdit = id
+                } else {
+                    link.innerText = "edit"
+                    this.isRowEdit = false
+                    this.rowIdToEdit = null
+                    this.selectedRecord = null
+                    this.selectedRecordStaging = null
+                }
+            }
+        }
+        persistDetails(value: Record<string, any>) {
+            this.selectedRecord = value
+        }
         sort(key: string) {
             this.sortOrders[key] = 1
         }
-        isRowSelected = false
-        //functions
         sortBy(key: string) {
             //Changing sortKey to empty string before assigning the value
             // forces the displayData getter to always be computed
@@ -196,7 +250,6 @@
             }, 300)
         }
         selectRow(id: number) {
-            //debugger
             const row = document.getElementById("row" + id)
             const checkbox: HTMLInputElement = document.getElementById(
                 String(id)
@@ -204,17 +257,40 @@
             if (checkbox && row) {
                 if (!checkbox.checked) {
                     row.setAttribute("class", "highlight")
-                    this.selectedRowId = id
-                    this.isRowSelected = true
+                    this.selectedRowIds.push(id)
                     checkbox.checked = true
                 } else {
                     row.removeAttribute("class")
-                    this.selectedRowId = null
+                    this.selectedRowIds = this.selectedRowIds.filter(
+                        (v) => v !== id
+                    )
                     checkbox.checked = false
                 }
             }
         }
         //getters and setters
+        get selectedRecord(): Record<string, any> | null {
+            if (!this.selectedRecordStaging) {
+                const data = this.displayData.find(
+                    (r) => r[this.rowIdentifier] == this.rowIdToEdit
+                )
+                if (data) {
+                    this.selectedRecordStaging = data
+                    return data
+                } else this.selectedRecordStaging = null
+            }
+            return this.selectedRecordStaging
+        }
+        set selectedRecord(value: Record<string, any> | null) {
+            const index = this.displayData.findIndex(
+                (r: Record<string, any>) =>
+                    r[this.rowIdentifier] == this.rowIdToEdit
+            )
+            if (this.displayData[index]) {
+                this.selectedRecordStaging = value
+                this.displayData[index] = value
+            }
+        }
         get filterText(): string | null {
             return this.filterTextDelayed
         }
@@ -380,7 +456,7 @@
         margin-left: 0.2rem;
         margin-right: 0.2rem;
     }
-    
+
     body {
         font-family: inherit;
         font-size: 1.4rem;
