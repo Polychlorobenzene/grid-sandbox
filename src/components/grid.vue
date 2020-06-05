@@ -13,13 +13,13 @@
                     :icon="['fas', 'angle-double-left']"
                     title="First Page"
                     aria-hidden="true"
+                    aria-label="First Page"
                     class="icon"
                 ></font-awesome-icon>
             </a>
             <a
                 :disabled="isFirstPage"
                 class="btn"
-                href
                 id="previousPage"
                 @click.prevent="getPageResults(currentPage - 1)"
             >
@@ -27,6 +27,7 @@
                     :icon="['fas', 'angle-left']"
                     title="First Page"
                     aria-hidden="true"
+                    aria-label="Previous Page"
                     class="icon"
                 ></font-awesome-icon>
             </a>
@@ -56,6 +57,7 @@
                     :icon="['fas', 'angle-right']"
                     title="First Page"
                     aria-hidden="true"
+                    aria-label="Next Page"
                     class="icon"
                 ></font-awesome-icon>
             </a>
@@ -70,6 +72,7 @@
                     :icon="['fas', 'angle-double-right']"
                     title="First Page"
                     aria-hidden="true"
+                    aria-label="Last Page"
                     class="icon"
                 ></font-awesome-icon>
             </a>
@@ -84,7 +87,9 @@
         <table>
             <thead>
                 <tr>
-                    <th v-if="dataColumns.length > 0"></th>
+                    <th v-if="dataColumns.length > 0 && rowIdentifier">
+                        {{ rowIdentifier }}
+                    </th>
                     <th
                         v-for="key in dataColumns"
                         :key="key"
@@ -106,10 +111,11 @@
                     :id="'row' + entry[`${rowIdentifier}`]"
                     @click="selectRow(entry[`${rowIdentifier}`])"
                 >
-                    <td>
+                    <td v-if="rowIdentifier">
                         <input
                             type="checkbox"
                             :id="entry[`${rowIdentifier}`]"
+                            @click="selectRow(entry[`${rowIdentifier}`])"
                         />
                     </td>
 
@@ -119,14 +125,18 @@
                 </tr>
             </tbody>
         </table>
+        <div class="delete" v-if="isRowSelected">
+            <button>Delete Selected Rows</button>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     import { Component, Prop, Vue } from "vue-property-decorator"
 
     //import DataGridTable from "./DataGridTable.vue"
-    import IGridPage from "../models/IGridPage"
+    import GridPage from "../models/GridPage"
 
     @Component({
         components: {
@@ -157,7 +167,7 @@
         sort(key: string) {
             this.sortOrders[key] = 1
         }
-        isDetailsView = false
+        isRowSelected = false
         //functions
         sortBy(key: string) {
             //Changing sortKey to empty string before assigning the value
@@ -195,7 +205,7 @@
                 if (!checkbox.checked) {
                     row.setAttribute("class", "highlight")
                     this.selectedRowId = id
-                    this.isDetailsView = true
+                    this.isRowSelected = true
                     checkbox.checked = true
                 } else {
                     row.removeAttribute("class")
@@ -251,6 +261,9 @@
                             )
                         })
                 })
+                if (this.currentPage > this.pageCount) {
+                    this.currentPage = 1
+                }
             }
             if (this.sortKey.length > 0) {
                 if (this.browserSupportsLocaleCompare) {
@@ -292,10 +305,10 @@
             return Math.floor(this.filteredData.length / displayCount)
         }
         // range is the number before and after the current page to display
-        get visiblePages(): IGridPage[] {
+        get visiblePages(): GridPage[] {
             if (this.pageCount) {
                 let range = this.pageSpan
-                const visiblePages: IGridPage[] = []
+                const visiblePages: GridPage[] = []
                 let begin = this.currentPage - range
                 let end = this.currentPage + range
                 if (!range) range = 2
@@ -310,7 +323,7 @@
                     end = this.currentPage + range
                 }
                 for (let i = begin; i <= end; i++) {
-                    const page: IGridPage = {
+                    const page: GridPage = {
                         page: i,
                         isCurrentPage: this.currentPage === i
                     }
@@ -344,7 +357,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
     .highlight {
         background-color: yellow;
     }
@@ -354,7 +367,8 @@
     }
     .page-span {
         display: inline-block;
-        min-width: 100px;
+        min-width: 7em;
+        min-height: 1rem;
         text-align: center;
     }
 
@@ -362,7 +376,11 @@
         font-weight: bold;
         font-size: larger;
     }
-
+    .icon {
+        margin-left: 0.2rem;
+        margin-right: 0.2rem;
+    }
+    
     body {
         font-family: inherit;
         font-size: 1.4rem;
@@ -370,6 +388,8 @@
     }
 
     table {
+        margin-left: auto;
+        margin-right: auto;
         border: 2px solid rgb(51, 102, 153);
         border-radius: 3px;
         background-color: #fff;
