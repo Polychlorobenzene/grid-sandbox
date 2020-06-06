@@ -17,11 +17,6 @@
         @Prop() private record!: Record<string, unknown>
         @Prop({ default: null })
         private fieldsToBind!: string[] | null
-        //private deepRecord: Record<string, unknown> | null = null
-        // private shallowRecord: Record<string, unknown> = Object.assign(
-        //     {},
-        //     this.record
-        // )
         fields: string[] = []
         @Emit("persisted-record")
         persistRecord() {

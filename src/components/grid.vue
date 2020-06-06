@@ -135,6 +135,7 @@
         </table>
         <div id="details" v-if="isRowEdit === true">
             <grid-detail
+                v-if="selectedRecord"
                 :record="selectedRecord"
                 :fieldsToBind="dataColumns"
                 @persisted-record="persistDetails"
@@ -161,7 +162,7 @@
         }
     })
     export default class DataGrid extends Vue {
-        @Prop() private data!: [{}]
+        @Prop() private data!: Record<string, any>[]
         @Prop() private rowIdentifier!: number
         @Prop() private columns!: string[]
         @Prop() private pageSpan!: number
@@ -181,7 +182,6 @@
         rowIdToEdit: number | null = null
         //functions
         editRecord(id: number) {
-            //debugger
             if (this.isRowEdit && this.rowIdToEdit !== id) {
                 if (
                     !confirm(
@@ -229,7 +229,6 @@
             this.sortKey = ""
             this.sortKey = key
             this.sortOrders[key] = this.sortOrders[key] * -1
-            //write function to store the whole filter text then set it when the len > 3
         }
         getPageResults(page: number) {
             if (page >= 1 && page <= this.pageCount) {
@@ -271,7 +270,7 @@
         //getters and setters
         get selectedRecord(): Record<string, any> | null {
             if (!this.selectedRecordStaging) {
-                const data = this.displayData.find(
+                const data = this.data.find(
                     (r) => r[this.rowIdentifier] == this.rowIdToEdit
                 )
                 if (data) {
@@ -282,13 +281,20 @@
             return this.selectedRecordStaging
         }
         set selectedRecord(value: Record<string, any> | null) {
-            const index = this.displayData.findIndex(
+            const indexData = this.data.findIndex(
                 (r: Record<string, any>) =>
                     r[this.rowIdentifier] == this.rowIdToEdit
             )
-            if (this.displayData[index]) {
+            const indexDisplay = this.displayData.findIndex(
+                (r: Record<string, any>) =>
+                    r[this.rowIdentifier] == this.rowIdToEdit
+            )
+            if (this.data[indexData] && this.displayData[indexDisplay]) {
                 this.selectedRecordStaging = value
-                this.displayData[index] = value
+                if (value) {
+                    this.displayData[indexDisplay] = value
+                    this.data[indexData] = value
+                }
             }
         }
         get filterText(): string | null {
