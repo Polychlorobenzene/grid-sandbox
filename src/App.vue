@@ -12,6 +12,7 @@
     import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons"
     import { faAngleLeft } from "@fortawesome/free-solid-svg-icons"
     import { faAngleRight } from "@fortawesome/free-solid-svg-icons"
+    import { faPlus } from "@fortawesome/free-solid-svg-icons"
     import HelloGrid from "./components/HelloGrid.vue"
 
     //font-awesome setup
@@ -20,6 +21,7 @@
     library.add(faAngleDoubleRight)
     library.add(faAngleLeft)
     library.add(faAngleRight)
+    library.add(faPlus)
     Vue.component("font-awesome-icon", FontAwesomeIcon)
     @Component({
         components: {

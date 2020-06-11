@@ -39,7 +39,7 @@
                 >
                     <a
                         href
-                        @click.prevent="currentPage = item.page"
+                        @click.prevent="getPageResults(item.page)"
                         :class="item.isCurrentPage ? 'make-bold' : ''"
                         >{{ item.page }}</a
                     >
@@ -87,7 +87,18 @@
         <table>
             <thead>
                 <tr>
-                    <th v-if="dataColumns.length > 0 && rowIdentifier">
+                    <th
+                        v-if="dataColumns.length > 0 && rowIdentifier"
+                        :key="rowIdentifier"
+                        @click="sortBy(`${rowIdentifier}`)"
+                        :class="{ active: sortKey == rowIdentifier }"
+                    >
+                        <span
+                            class="arrow"
+                            :class="
+                                sortOrders[rowIdentifier] > 0 ? 'asc' : 'dsc'
+                            "
+                        ></span>
                         {{ rowIdentifier }}
                     </th>
                     <th
@@ -112,11 +123,11 @@
                     @click="selectRow(entry[`${rowIdentifier}`])"
                 >
                     <td v-if="rowIdentifier">
-                        <input
+                        <!-- <input
                             type="checkbox"
                             :id="entry[`${rowIdentifier}`]"
                             @click="selectRow(entry[`${rowIdentifier}`])"
-                        />
+                        /> -->
                         <a
                             href
                             :id="'edit-' + entry[`${rowIdentifier}`]"
@@ -125,10 +136,30 @@
                             "
                             >edit</a
                         >
+                        {{ entry[`${rowIdentifier}`] }}
                     </td>
 
                     <td v-for="key in dataColumns" :key="key">
                         {{ entry[key] }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button @click.prevent="addRecord">
+                            <font-awesome-icon
+                                :icon="['fas', 'plus']"
+                                title="Add Record"
+                                aria-hidden="true"
+                                aria-label="Add Record"
+                                class="icon"
+                            ></font-awesome-icon
+                            >Add record
+                        </button>
+                    </td>
+                    <td v-if="selectedRowIds && selectedRowIds.length > 0">
+                        <button @click.prevent="deleteSelected">
+                            Delete Selected ({{ selectedRowIds.length }})
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -146,7 +177,7 @@
 
 <script lang="ts">
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    import { Component, Prop, Vue } from "vue-property-decorator"
+    import { Component, Prop, Vue, Emit } from "vue-property-decorator"
 
     import gridDetail from "./gridDetail.vue"
     import GridPage from "../models/GridPage"
@@ -163,12 +194,12 @@
     })
     export default class DataGrid extends Vue {
         @Prop() private data!: Record<string, any>[]
-        @Prop() private rowIdentifier!: number
+        @Prop() private rowIdentifier!: string
         @Prop() private columns!: string[]
         @Prop() private pageSpan!: number
         //data
         timer: number | null = null
-        selectedRowIds: number[] = []
+        selectedRowIds: number[] | null = null
         dataColumnsStaging: string[] = []
         selectedRecordStaging: Record<string, any> | null = null
         filterTextBuffer = ""
@@ -181,6 +212,8 @@
         isRowEdit = false
         rowIdToEdit: number | null = null
         //functions
+
+        //add and edit record
         editRecord(id: number) {
             if (this.isRowEdit && this.rowIdToEdit !== id) {
                 if (
@@ -217,9 +250,49 @@
                 }
             }
         }
+        @Emit("record-saved")
         persistDetails(value: Record<string, any>) {
             this.selectedRecord = value
+            const oldLink = document.getElementById("edit-" + this.rowIdToEdit)
+            if (oldLink) {
+                oldLink.innerText = "edit"
+                this.isRowEdit = false
+                this.rowIdToEdit = null
+                this.selectedRecord = null
+                this.selectedRecordStaging = null
+            }
+            return value
         }
+        @Emit("record-added")
+        addRecord() {
+            const record: Record<string, any> | null = {}
+            const maxId = Math.max(
+                ...this.data.map((rec) => rec[this.rowIdentifier])
+            )
+            const newId = maxId ? maxId + 1 : 1
+            record[this.rowIdentifier] = newId
+            if (this.dataColumns && this.dataColumns.length > 0) {
+                for (let col = 0; col < this.dataColumns.length; col++) {
+                    record[this.dataColumns[col]] = ""
+                }
+            }
+            this.data.splice(this.displayRecordCount, 0, record)
+            this.displayData.splice(this.displayRecordCount, 0, record)
+            this.isRowEdit = true
+            this.rowIdToEdit = newId
+            this.selectedRecordStaging = record
+            return record
+        }
+        @Emit("records-deleted")
+        deleteSelected() {
+            if (this.selectedRowIds) {
+                const rowsToDelete = this.selectedRowIds.slice()
+                this.selectedRowIds = []
+                return rowsToDelete
+            } else return []
+        }
+
+        //sort and filter
         sort(key: string) {
             this.sortOrders[key] = 1
         }
@@ -229,11 +302,6 @@
             this.sortKey = ""
             this.sortKey = key
             this.sortOrders[key] = this.sortOrders[key] * -1
-        }
-        getPageResults(page: number) {
-            if (page >= 1 && page <= this.pageCount) {
-                this.currentPage = page
-            }
         }
         setFilterText() {
             alert(this.filterTextBuffer)
@@ -248,22 +316,23 @@
                 this.filterText = this.filterTextBuffer
             }, 300)
         }
+        getPageResults(page: number) {
+            if (page >= 1 && page <= this.pageCount) {
+                this.currentPage = page
+            }
+        }
         selectRow(id: number) {
             const row = document.getElementById("row" + id)
-            const checkbox: HTMLInputElement = document.getElementById(
-                String(id)
-            ) as HTMLInputElement
-            if (checkbox && row) {
-                if (!checkbox.checked) {
+            if (!this.selectedRowIds) this.selectedRowIds = []
+            if (row) {
+                if (!row.hasAttribute("class")) {
                     row.setAttribute("class", "highlight")
                     this.selectedRowIds.push(id)
-                    checkbox.checked = true
                 } else {
                     row.removeAttribute("class")
                     this.selectedRowIds = this.selectedRowIds.filter(
                         (v) => v !== id
                     )
-                    checkbox.checked = false
                 }
             }
         }
@@ -323,7 +392,7 @@
             const filterKey = this.filterText && this.filterText.toLowerCase()
             const textKey: string = filterKey ? filterKey : ""
             const startIndex: number =
-                this.currentPage * this.displayRecordCount
+                (this.currentPage - 1) * this.displayRecordCount
             this.filteredData = this.data
             let displayData = []
             let sortedData: any[] = []
@@ -384,7 +453,7 @@
                 this.filteredData.length < this.displayRecordCount
                     ? this.filteredData.length
                     : this.displayRecordCount
-            return Math.floor(this.filteredData.length / displayCount)
+            return Math.ceil(this.filteredData.length / displayCount)
         }
         // range is the number before and after the current page to display
         get visiblePages(): GridPage[] {
@@ -428,12 +497,36 @@
             }
             return false
         }
+        get selectedDisplayRowIds() {
+            if (!this.selectedRowIds) return []
+            const displayedIds = new Set(
+                this.displayData.map((r) => r[this.rowIdentifier])
+            )
+            const intersection = new Set(
+                this.selectedRowIds.filter((r) => displayedIds.has(r))
+            )
+            return [...intersection]
+        }
 
         //lifecycle
         mounted() {
             this.dataColumns.forEach((key) => {
                 this.sortOrders[key] = -1
             })
+            //Add sorting for the key row if present
+            if (this.rowIdentifier && this.rowIdentifier.length > 0)
+                this.sortOrders[this.rowIdentifier] = -1
+        }
+        updated() {
+            for (let i = 0; i < this.selectedDisplayRowIds.length; i++) {
+                const id = this.selectedDisplayRowIds[i]
+                const row = document.getElementById("row" + id)
+                if (row) {
+                    if (!row.hasAttribute("class")) {
+                        row.setAttribute("class", "highlight")
+                    }
+                }
+            }
         }
     }
 </script>

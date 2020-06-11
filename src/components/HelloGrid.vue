@@ -12,7 +12,8 @@
             :data="gridData"
             :columns="gridColumns"
             :pageSpan="gridPageRange"
-            rowIdentifier="Atomic_Number"
+            :rowIdentifier="rowIdentifier"
+            @records-deleted="deleteRecords"
         />
     </div>
 </template>
@@ -34,13 +35,25 @@
         gridData: any[] = []
         gridColumns: string[] = []
         gridPageRange = 3
+        rowIdentifier = "Atomic_Number"
 
         //functions
         getData() {
-            const data = periodicTable
-            this.gridData = data
+            this.gridData = periodicTable
             const columns = ["Symbol", "Name", "Melting_Point", "Boiling_Point"]
             this.gridColumns = columns
+        }
+        deleteRecords(ids: number[]) {
+            const identifier = this.rowIdentifier
+            if (this.gridData) {
+                this.gridData = this.gridData.filter((r) => {
+                    const obj = r
+                    if (!ids.includes(obj[identifier])) return obj
+                })
+            }
+        }
+        addRecord(record: Record<string, any>) {
+            this.gridData.push(record)
         }
     }
 </script>
