@@ -3,10 +3,16 @@
         <div v-for="field in fieldsToBind" :key="field">
             <span>
                 <label :for="field">{{ field }}</label>
-                <input type="text" :id="field" v-model="recordToBind[field]" />
+                <input
+                    class="record"
+                    type="text"
+                    :id="field"
+                    v-model="recordToBind[field]"
+                />
             </span>
         </div>
         <button @click.prevent="persistRecord()">Save</button>
+        <button @click.prevent="cancel()">Cancel</button>
     </div>
 </template>
 <script lang="ts">
@@ -17,10 +23,27 @@
         @Prop() private record!: Record<string, unknown>
         @Prop({ default: null })
         private fieldsToBind!: string[] | null
+        @Prop({ default: false })
+        private isAdd!: boolean
         fields: string[] = []
         @Emit("persisted-record")
         persistRecord() {
             return this.recordToBind
+        }
+        @Emit("cancel")
+        cancel() {
+            const textBoxes = document.getElementsByClassName("record")
+            for (let i = 0; i < textBoxes.length; i++) {
+                const textbox = textBoxes[i] as HTMLInputElement
+                if (textbox) {
+                    const field = textbox.id
+                    const value = this.record[field] as string
+                    if (value) {
+                        textbox.value = value
+                        this.recordToBind[field] = value
+                    }
+                }
+            }
         }
         get recordToBind(): Record<string, unknown> {
             return Object.assign({}, this.record)

@@ -170,6 +170,7 @@
                 :record="selectedRecord"
                 :fieldsToBind="dataColumns"
                 @persisted-record="persistDetails"
+                @cancel="cancelEdit"
             ></grid-detail>
         </div>
     </div>
@@ -290,6 +291,12 @@
                 this.selectedRowIds = []
                 return rowsToDelete
             } else return []
+        }
+        cancelEdit() {
+            if (this.selectedRecord) {
+                const id = this.selectedRecord[this.rowIdentifier]
+                this.editRecord(id)
+            }
         }
 
         //sort and filter
