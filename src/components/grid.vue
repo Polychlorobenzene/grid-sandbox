@@ -15,7 +15,7 @@
                     aria-hidden="true"
                     aria-label="First Page"
                     class="icon"
-                ></font-awesome-icon>
+                />
             </a>
             <a
                 :disabled="isFirstPage"
@@ -29,7 +29,7 @@
                     aria-hidden="true"
                     aria-label="Previous Page"
                     class="icon"
-                ></font-awesome-icon>
+                />
             </a>
             <span class="page-span" id="page-span">
                 <span
@@ -59,7 +59,7 @@
                     aria-hidden="true"
                     aria-label="Next Page"
                     class="icon"
-                ></font-awesome-icon>
+                />
             </a>
             <a
                 :disabled="isLastPage"
@@ -74,7 +74,7 @@
                     aria-hidden="true"
                     aria-label="Last Page"
                     class="icon"
-                ></font-awesome-icon>
+                />
             </a>
             <input
                 type="text"
@@ -98,7 +98,7 @@
                             :class="
                                 sortOrders[rowIdentifier] > 0 ? 'asc' : 'dsc'
                             "
-                        ></span>
+                        />
                         {{ rowIdentifier }}
                     </th>
                     <th
@@ -108,10 +108,11 @@
                         :class="{ active: sortKey == key }"
                     >
                         {{ key | capitalize }}
+                        <!-- TODO: make test - splitting the data from the span may make it hard for a screen reader -->
                         <span
                             class="arrow"
                             :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"
-                        ></span>
+                        />
                     </th>
                 </tr>
             </thead>
@@ -123,11 +124,6 @@
                     @click="selectRow(entry[`${rowIdentifier}`])"
                 >
                     <td v-if="rowIdentifier">
-                        <!-- <input
-                            type="checkbox"
-                            :id="entry[`${rowIdentifier}`]"
-                            @click="selectRow(entry[`${rowIdentifier}`])"
-                        /> -->
                         <a
                             href
                             :id="'edit-' + entry[`${rowIdentifier}`]"
@@ -152,8 +148,7 @@
                                 aria-hidden="true"
                                 aria-label="Add Record"
                                 class="icon"
-                            ></font-awesome-icon
-                            >Add record
+                            />Add record
                         </button>
                     </td>
                     <td v-if="selectedRowIds && selectedRowIds.length > 0">
@@ -171,7 +166,7 @@
                 :fieldsToBind="dataColumns"
                 @persisted-record="persistDetails"
                 @cancel="cancelEdit"
-            ></grid-detail>
+            />
         </div>
     </div>
 </template>

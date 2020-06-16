@@ -52,7 +52,7 @@
                 })
             }
         }
-        addRecord(record: Record<string, any>) {
+        addRecord(record: Record<string, unknown>) {
             this.gridData.push(record)
         }
     }
