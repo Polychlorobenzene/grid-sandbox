@@ -157,17 +157,21 @@
                         </button>
                     </td>
                 </tr>
+                <tr v-if="isRowEdit === true">
+                    <td class="record-details">
+                        <div id="details">
+                            <grid-detail
+                                v-if="selectedRecord"
+                                :record="selectedRecord"
+                                :fieldsToBind="dataColumns"
+                                @persisted-record="persistDetails"
+                                @cancel="cancelEdit"
+                            />
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        <div id="details" v-if="isRowEdit === true">
-            <grid-detail
-                v-if="selectedRecord"
-                :record="selectedRecord"
-                :fieldsToBind="dataColumns"
-                @persisted-record="persistDetails"
-                @cancel="cancelEdit"
-            />
-        </div>
     </div>
 </template>
 
@@ -193,6 +197,7 @@
         @Prop() private rowIdentifier!: string
         @Prop() private columns!: string[]
         @Prop() private pageSpan!: number
+        @Prop({ default: 10 }) private recordsPerPage!: number
         //data
         timer: number | null = null
         selectedRowIds: number[] | null = null
@@ -201,11 +206,11 @@
         filterTextBuffer = ""
         private filterTextDelayed: string | null = null
         filteredData: any[] = []
-        displayRecordCount = 10
         currentPage = 1
         sortOrders: any = {}
         sortKey = ""
         isRowEdit = false
+        isRecordAdded = false
         rowIdToEdit: number | null = null
         //functions
 
@@ -261,20 +266,33 @@
         }
         @Emit("record-added")
         addRecord() {
+            this.filterText = ""
             const record: Record<string, any> | null = {}
             const maxId = Math.max(
                 ...this.data.map((rec) => rec[this.rowIdentifier])
             )
-            const newId = maxId ? maxId + 1 : 1
+            const newId = maxId && maxId !== -Infinity ? maxId + 1 : 1
             record[this.rowIdentifier] = newId
             if (this.dataColumns && this.dataColumns.length > 0) {
                 for (let col = 0; col < this.dataColumns.length; col++) {
                     record[this.dataColumns[col]] = ""
                 }
             }
-            this.data.splice(this.displayRecordCount, 0, record)
-            this.displayData.splice(this.displayRecordCount, 0, record)
+            if (this.currentPage === 1) {
+                const position = this.recordsPerPage - 1
+                this.data.splice(position, 0, record)
+            } else {
+                const position =
+                    (this.currentPage - 1) * this.recordsPerPage +
+                    (this.recordsPerPage - 1)
+                this.data.splice(position, 0, record)
+            }
+            const link = document.getElementById("edit-" + this.rowIdToEdit)
+            if (link) {
+                link.innerText = "editing"
+            }
             this.isRowEdit = true
+            this.isRecordAdded = true
             this.rowIdToEdit = newId
             this.selectedRecordStaging = record
             return record
@@ -394,7 +412,7 @@
             const filterKey = this.filterText && this.filterText.toLowerCase()
             const textKey: string = filterKey ? filterKey : ""
             const startIndex: number =
-                (this.currentPage - 1) * this.displayRecordCount
+                (this.currentPage - 1) * this.recordsPerPage
             this.filteredData = this.data
             let displayData = []
             let sortedData: any[] = []
@@ -414,9 +432,9 @@
                             )
                         })
                 })
-                if (this.currentPage > this.pageCount) {
-                    this.currentPage = 1
-                }
+                // if (this.currentPage > this.pageCount) {
+                //     this.currentPage = 1
+                // }
             }
             if (this.sortKey.length > 0) {
                 if (this.browserSupportsLocaleCompare) {
@@ -441,20 +459,23 @@
                 sortedData = this.filteredData
             }
             if (this.currentPage === 1) {
-                displayData = sortedData.slice(0, this.displayRecordCount)
+                displayData = sortedData.slice(0, this.recordsPerPage)
             } else {
                 displayData = sortedData.slice(
                     startIndex,
-                    startIndex + this.displayRecordCount
+                    startIndex + this.recordsPerPage
                 )
+            }
+            if (this.currentPage > this.pageCount) {
+                this.currentPage = 1
             }
             return displayData
         }
         get pageCount(): number {
             const displayCount =
-                this.filteredData.length < this.displayRecordCount
+                this.filteredData.length < this.recordsPerPage
                     ? this.filteredData.length
-                    : this.displayRecordCount
+                    : this.recordsPerPage
             return Math.ceil(this.filteredData.length / displayCount)
         }
         // range is the number before and after the current page to display
@@ -535,6 +556,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+    .record-details {
+        text-align: right;
+    }
     .highlight {
         background-color: yellow;
     }

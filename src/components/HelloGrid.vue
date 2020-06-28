@@ -7,12 +7,15 @@
         >
             Get Data
         </button>
+        <button @click.prevent="clearData">Empty Grid</button>
         <grid
-            v-if="gridData && gridData.length > 0"
+            v-if="gridData && gridColumns && gridColumns.length > 0"
             :data="gridData"
             :columns="gridColumns"
             :pageSpan="gridPageRange"
             :rowIdentifier="rowIdentifier"
+            :recordsPerPage="recordsPerPage"
+            @record-added="addRecord"
             @records-deleted="deleteRecords"
         />
     </div>
@@ -36,12 +39,21 @@
         gridColumns: string[] = []
         gridPageRange = 3
         rowIdentifier = "Atomic_Number"
+        recordsPerPage = 10
 
         //functions
         getData() {
             this.gridData = periodicTable
             const columns = ["Symbol", "Name", "Melting_Point", "Boiling_Point"]
             this.gridColumns = columns
+        }
+        clearData() {
+            this.gridData = []
+            if (!this.gridColumns || this.gridColumns.length < 1) {
+                const columns = ["column 1", "column 2", "column 3"]
+                this.gridColumns = columns
+                this.rowIdentifier = "id"
+            }
         }
         deleteRecords(ids: number[]) {
             const identifier = this.rowIdentifier
@@ -53,7 +65,8 @@
             }
         }
         addRecord(record: Record<string, unknown>) {
-            this.gridData.push(record)
+            //alert("Record Added:" + JSON.stringify(record))
+            //this.gridData.splice(0, 0, record)
         }
     }
 </script>

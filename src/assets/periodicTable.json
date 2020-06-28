@@ -2,7 +2,7 @@
     {
       "Name": "Hydrogen",
       "Symbol": "H",
-      "Atomic_Number": "1",
+      "Atomic_Number": 1,
       "Atomic_Weight": "1.00794",
       "Density": "0.0708 (@ -253degC)",
       "Melting_Point": "14.01",
@@ -25,7 +25,7 @@
     {
       "Name": "Helium",
       "Symbol": "He",
-      "Atomic_Number": "2",
+      "Atomic_Number": 2,
       "Atomic_Weight": "4.002602",
       "Density": "0.147 (@ -270degC)",
       "Melting_Point": "0.95",
@@ -48,7 +48,7 @@
     {
       "Name": "Lithium",
       "Symbol": "Li",
-      "Atomic_Number": "3",
+      "Atomic_Number": 3,
       "Atomic_Weight": "6.941",
       "Density": "0.534",
       "Melting_Point": "553.69",
@@ -71,7 +71,7 @@
     {
       "Name": "Beryllium",
       "Symbol": "Be",
-      "Atomic_Number": "4",
+      "Atomic_Number": 4,
       "Atomic_Weight": "9.01218",
       "Density": "1.848",
       "Melting_Point": "1551",
@@ -94,7 +94,7 @@
     {
       "Name": "Boron",
       "Symbol": "B",
-      "Atomic_Number": "5",
+      "Atomic_Number": 5,
       "Atomic_Weight": "10.811",
       "Density": "2.34",
       "Melting_Point": "2573",
@@ -117,7 +117,7 @@
     {
       "Name": "Carbon",
       "Symbol": "C",
-      "Atomic_Number": "6",
+      "Atomic_Number": 6,
       "Atomic_Weight": "12.011",
       "Density": "2.25 (graphite)",
       "Melting_Point": "3820",
@@ -140,7 +140,7 @@
     {
       "Name": "Nitrogen",
       "Symbol": "N",
-      "Atomic_Number": "7",
+      "Atomic_Number": 7,
       "Atomic_Weight": "14.00674",
       "Density": "0.808 (@ -195.8degC)",
       "Melting_Point": "63.29",
@@ -163,7 +163,7 @@
     {
       "Name": "Oxygen",
       "Symbol": "O",
-      "Atomic_Number": "8",
+      "Atomic_Number": 8,
       "Atomic_Weight": "15.9994",
       "Density": "1.149 (@ -183degC)",
       "Melting_Point": "54.8",
@@ -186,7 +186,7 @@
     {
       "Name": "Fluorine",
       "Symbol": "F",
-      "Atomic_Number": "9",
+      "Atomic_Number": 9,
       "Atomic_Weight": "18.998403",
       "Density": "1.108 (@ -189degC)",
       "Melting_Point": "53.53",
@@ -209,7 +209,7 @@
     {
       "Name": "Neon",
       "Symbol": "Ne",
-      "Atomic_Number": "10",
+      "Atomic_Number": 10,
       "Atomic_Weight": "20.1797",
       "Density": "1.204 (@ -246degC)",
       "Melting_Point": "48",
@@ -232,7 +232,7 @@
     {
       "Name": "Sodium",
       "Symbol": "Na",
-      "Atomic_Number": "11",
+      "Atomic_Number": 11,
       "Atomic_Weight": "22.989768",
       "Density": "0.971",
       "Melting_Point": "370.96",
@@ -255,7 +255,7 @@
     {
       "Name": "Magnesium",
       "Symbol": "Mg",
-      "Atomic_Number": "12",
+      "Atomic_Number": 12,
       "Atomic_Weight": "24.305",
       "Density": "1.738",
       "Melting_Point": "922",
@@ -278,7 +278,7 @@
     {
       "Name": "Aluminum",
       "Symbol": "Al",
-      "Atomic_Number": "13",
+      "Atomic_Number": 13,
       "Atomic_Weight": "26.981539",
       "Density": "2.6989",
       "Melting_Point": "933.5",
@@ -301,7 +301,7 @@
     {
       "Name": "Silicon",
       "Symbol": "Si",
-      "Atomic_Number": "14",
+      "Atomic_Number": 14,
       "Atomic_Weight": "28.0855",
       "Density": "2.33",
       "Melting_Point": "1683",
@@ -324,7 +324,7 @@
     {
       "Name": "Phosphorus",
       "Symbol": "P",
-      "Atomic_Number": "15",
+      "Atomic_Number": 15,
       "Atomic_Weight": "30.973762",
       "Density": "1.82 (white phosphorus)",
       "Melting_Point": "317.3",
@@ -347,7 +347,7 @@
     {
       "Name": "Sulfur",
       "Symbol": "S",
-      "Atomic_Number": "16",
+      "Atomic_Number": 16,
       "Atomic_Weight": "32.066",
       "Density": "2.07",
       "Melting_Point": "386",
@@ -370,7 +370,7 @@
     {
       "Name": "Chlorine",
       "Symbol": "Cl",
-      "Atomic_Number": "17",
+      "Atomic_Number": 17,
       "Atomic_Weight": "35.4527",
       "Density": "1.56 (@ -33.6degC)",
       "Melting_Point": "172.2",
@@ -393,7 +393,7 @@
     {
       "Name": "Argon",
       "Symbol": "Ar",
-      "Atomic_Number": "18",
+      "Atomic_Number": 18,
       "Atomic_Weight": "39.948",
       "Density": "1.40 (@ -186degC)",
       "Melting_Point": "83.8",
@@ -416,7 +416,7 @@
     {
       "Name": "Potassium",
       "Symbol": "K",
-      "Atomic_Number": "19",
+      "Atomic_Number": 19,
       "Atomic_Weight": "39.0983",
       "Density": "0.856",
       "Melting_Point": "336.8",
@@ -439,7 +439,7 @@
     {
       "Name": "Calcium",
       "Symbol": "Ca",
-      "Atomic_Number": "20",
+      "Atomic_Number": 20,
       "Atomic_Weight": "40.078",
       "Density": "1.55",
       "Melting_Point": "1112",
@@ -462,7 +462,7 @@
     {
       "Name": "Scandium",
       "Symbol": "Sc",
-      "Atomic_Number": "21",
+      "Atomic_Number": 21,
       "Atomic_Weight": "44.95591",
       "Density": "2.99",
       "Melting_Point": "1814",
@@ -485,7 +485,7 @@
     {
       "Name": "Titanium",
       "Symbol": "Ti",
-      "Atomic_Number": "22",
+      "Atomic_Number": 22,
       "Atomic_Weight": "47.88",
       "Density": "4.54",
       "Melting_Point": "1933",
@@ -508,7 +508,7 @@
     {
       "Name": "Vanadium",
       "Symbol": "V",
-      "Atomic_Number": "23",
+      "Atomic_Number": 23,
       "Atomic_Weight": "50.9415",
       "Density": "6.11",
       "Melting_Point": "2160",
@@ -531,7 +531,7 @@
     {
       "Name": "Chromium",
       "Symbol": "Cr",
-      "Atomic_Number": "24",
+      "Atomic_Number": 24,
       "Atomic_Weight": "51.9961",
       "Density": "7.18",
       "Melting_Point": "2130",
@@ -554,7 +554,7 @@
     {
       "Name": "Manganese",
       "Symbol": "Mn",
-      "Atomic_Number": "25",
+      "Atomic_Number": 25,
       "Atomic_Weight": "54.93805",
       "Density": "7.21",
       "Melting_Point": "1517",
@@ -577,7 +577,7 @@
     {
       "Name": "Iron",
       "Symbol": "Fe",
-      "Atomic_Number": "26",
+      "Atomic_Number": 26,
       "Atomic_Weight": "55.847",
       "Density": "7.874",
       "Melting_Point": "1808",
@@ -600,7 +600,7 @@
     {
       "Name": "Cobalt",
       "Symbol": "Co",
-      "Atomic_Number": "27",
+      "Atomic_Number": 27,
       "Atomic_Weight": "58.9332",
       "Density": "8.9",
       "Melting_Point": "1768",
@@ -623,7 +623,7 @@
     {
       "Name": "Nickel",
       "Symbol": "Ni",
-      "Atomic_Number": "28",
+      "Atomic_Number": 28,
       "Atomic_Weight": "58.6934",
       "Density": "8.902",
       "Melting_Point": "1726",
@@ -646,7 +646,7 @@
     {
       "Name": "Copper",
       "Symbol": "Cu",
-      "Atomic_Number": "29",
+      "Atomic_Number": 29,
       "Atomic_Weight": "63.546",
       "Density": "8.96",
       "Melting_Point": "1356.6",
@@ -669,7 +669,7 @@
     {
       "Name": "Zinc",
       "Symbol": "Zn",
-      "Atomic_Number": "30",
+      "Atomic_Number": 30,
       "Atomic_Weight": "65.39",
       "Density": "7.133",
       "Melting_Point": "692.73",
@@ -692,7 +692,7 @@
     {
       "Name": "Gallium",
       "Symbol": "Ga",
-      "Atomic_Number": "31",
+      "Atomic_Number": 31,
       "Atomic_Weight": "69.723",
       "Density": "5.91",
       "Melting_Point": "302.93",
@@ -715,7 +715,7 @@
     {
       "Name": "Germanium",
       "Symbol": "Ge",
-      "Atomic_Number": "32",
+      "Atomic_Number": 32,
       "Atomic_Weight": "72.61",
       "Density": "5.323",
       "Melting_Point": "1210.6",
@@ -738,7 +738,7 @@
     {
       "Name": "Arsenic",
       "Symbol": "As",
-      "Atomic_Number": "33",
+      "Atomic_Number": 33,
       "Atomic_Weight": "74.92159",
       "Density": "5.73 (grey arsenic)",
       "Melting_Point": "1090",
@@ -761,7 +761,7 @@
     {
       "Name": "Selenium",
       "Symbol": "Se",
-      "Atomic_Number": "34",
+      "Atomic_Number": 34,
       "Atomic_Weight": "78.96",
       "Density": "4.79",
       "Melting_Point": "490",
@@ -784,7 +784,7 @@
     {
       "Name": "Bromine",
       "Symbol": "Br",
-      "Atomic_Number": "35",
+      "Atomic_Number": 35,
       "Atomic_Weight": "79.904",
       "Density": "3.12",
       "Melting_Point": "265.9",
@@ -807,7 +807,7 @@
     {
       "Name": "Krypton",
       "Symbol": "Kr",
-      "Atomic_Number": "36",
+      "Atomic_Number": 36,
       "Atomic_Weight": "83.8",
       "Density": "2.155 (@ -153degC)",
       "Melting_Point": "116.6",
@@ -830,7 +830,7 @@
     {
       "Name": "Rubidium",
       "Symbol": "Rb",
-      "Atomic_Number": "37",
+      "Atomic_Number": 37,
       "Atomic_Weight": "85.4678",
       "Density": "1.532",
       "Melting_Point": "312.2",
@@ -853,7 +853,7 @@
     {
       "Name": "Strontium",
       "Symbol": "Sr",
-      "Atomic_Number": "38",
+      "Atomic_Number": 38,
       "Atomic_Weight": "87.62",
       "Density": "2.54",
       "Melting_Point": "1042",
@@ -876,7 +876,7 @@
     {
       "Name": "Yttrium",
       "Symbol": "Y",
-      "Atomic_Number": "39",
+      "Atomic_Number": 39,
       "Atomic_Weight": "88.90585",
       "Density": "4.47",
       "Melting_Point": "1795",
@@ -899,7 +899,7 @@
     {
       "Name": "Zirconium",
       "Symbol": "Zr",
-      "Atomic_Number": "40",
+      "Atomic_Number": 40,
       "Atomic_Weight": "91.224",
       "Density": "6.506",
       "Melting_Point": "2125",
@@ -922,7 +922,7 @@
     {
       "Name": "Niobium",
       "Symbol": "Nb",
-      "Atomic_Number": "41",
+      "Atomic_Number": 41,
       "Atomic_Weight": "92.90638",
       "Density": "8.57",
       "Melting_Point": "2741",
@@ -945,7 +945,7 @@
     {
       "Name": "Molybdenum",
       "Symbol": "Mo",
-      "Atomic_Number": "42",
+      "Atomic_Number": 42,
       "Atomic_Weight": "95.94",
       "Density": "10.22",
       "Melting_Point": "2890",
@@ -968,7 +968,7 @@
     {
       "Name": "Technetium",
       "Symbol": "Tc",
-      "Atomic_Number": "43",
+      "Atomic_Number": 43,
       "Atomic_Weight": "97.9072",
       "Density": "11.5",
       "Melting_Point": "2445",
@@ -991,7 +991,7 @@
     {
       "Name": "Ruthenium",
       "Symbol": "Ru",
-      "Atomic_Number": "44",
+      "Atomic_Number": 44,
       "Atomic_Weight": "101.07",
       "Density": "12.41",
       "Melting_Point": "2583",
@@ -1014,7 +1014,7 @@
     {
       "Name": "Rhodium",
       "Symbol": "Rh",
-      "Atomic_Number": "45",
+      "Atomic_Number": 45,
       "Atomic_Weight": "102.9055",
       "Density": "12.41",
       "Melting_Point": "2239",
@@ -1037,7 +1037,7 @@
     {
       "Name": "Palladium",
       "Symbol": "Pd",
-      "Atomic_Number": "46",
+      "Atomic_Number": 46,
       "Atomic_Weight": "106.42",
       "Density": "12.02",
       "Melting_Point": "1825",
@@ -1060,7 +1060,7 @@
     {
       "Name": "Silver",
       "Symbol": "Ag",
-      "Atomic_Number": "47",
+      "Atomic_Number": 47,
       "Atomic_Weight": "107.8682",
       "Density": "10.5",
       "Melting_Point": "1235.1",
@@ -1083,7 +1083,7 @@
     {
       "Name": "Cadmium",
       "Symbol": "Cd",
-      "Atomic_Number": "48",
+      "Atomic_Number": 48,
       "Atomic_Weight": "112.411",
       "Density": "8.65",
       "Melting_Point": "594.1",
@@ -1106,7 +1106,7 @@
     {
       "Name": "Indium",
       "Symbol": "In",
-      "Atomic_Number": "49",
+      "Atomic_Number": 49,
       "Atomic_Weight": "114.818",
       "Density": "7.31",
       "Melting_Point": "429.32",
@@ -1129,7 +1129,7 @@
     {
       "Name": "Tin",
       "Symbol": "Sn",
-      "Atomic_Number": "50",
+      "Atomic_Number": 50,
       "Atomic_Weight": "118.71",
       "Density": "7.31",
       "Melting_Point": "505.1",
@@ -1152,7 +1152,7 @@
     {
       "Name": "Antimony",
       "Symbol": "Sb",
-      "Atomic_Number": "51",
+      "Atomic_Number": 51,
       "Atomic_Weight": "121.76",
       "Density": "6.691",
       "Melting_Point": "903.9",
@@ -1175,7 +1175,7 @@
     {
       "Name": "Tellurium",
       "Symbol": "Te",
-      "Atomic_Number": "52",
+      "Atomic_Number": 52,
       "Atomic_Weight": "127.6",
       "Density": "6.24",
       "Melting_Point": "722.7",
@@ -1198,7 +1198,7 @@
     {
       "Name": "Iodine",
       "Symbol": "I",
-      "Atomic_Number": "53",
+      "Atomic_Number": 53,
       "Atomic_Weight": "126.90447",
       "Density": "4.93",
       "Melting_Point": "386.7",
@@ -1221,7 +1221,7 @@
     {
       "Name": "Xenon",
       "Symbol": "Xe",
-      "Atomic_Number": "54",
+      "Atomic_Number": 54,
       "Atomic_Weight": "131.29",
       "Density": "3.52 (@ -109degC)",
       "Melting_Point": "161.3",
@@ -1244,7 +1244,7 @@
     {
       "Name": "Cesium",
       "Symbol": "Cs",
-      "Atomic_Number": "55",
+      "Atomic_Number": 55,
       "Atomic_Weight": "132.90543",
       "Density": "1.873",
       "Melting_Point": "301.6",
@@ -1267,7 +1267,7 @@
     {
       "Name": "Barium",
       "Symbol": "Ba",
-      "Atomic_Number": "56",
+      "Atomic_Number": 56,
       "Atomic_Weight": "137.327",
       "Density": "3.5",
       "Melting_Point": "1002",
@@ -1290,7 +1290,7 @@
     {
       "Name": "Lanthanum",
       "Symbol": "La",
-      "Atomic_Number": "57",
+      "Atomic_Number": 57,
       "Atomic_Weight": "138.9055",
       "Density": "6.15",
       "Melting_Point": "1194",
@@ -1313,7 +1313,7 @@
     {
       "Name": "Cerium",
       "Symbol": "Ce",
-      "Atomic_Number": "58",
+      "Atomic_Number": 58,
       "Atomic_Weight": "140.115",
       "Density": "6.757",
       "Melting_Point": "1072",
@@ -1336,7 +1336,7 @@
     {
       "Name": "Praseodymium",
       "Symbol": "Pr",
-      "Atomic_Number": "59",
+      "Atomic_Number": 59,
       "Atomic_Weight": "140.90765",
       "Density": "6.773",
       "Melting_Point": "1204",
@@ -1359,7 +1359,7 @@
     {
       "Name": "Neodymium",
       "Symbol": "Nd",
-      "Atomic_Number": "60",
+      "Atomic_Number": 60,
       "Atomic_Weight": "144.24",
       "Density": "7.007",
       "Melting_Point": "1294",
@@ -1382,7 +1382,7 @@
     {
       "Name": "Promethium",
       "Symbol": "Pm",
-      "Atomic_Number": "61",
+      "Atomic_Number": 61,
       "Atomic_Weight": "144.9127",
       "Density": "7.2",
       "Melting_Point": "1441",
@@ -1405,7 +1405,7 @@
     {
       "Name": "Samarium",
       "Symbol": "Sm",
-      "Atomic_Number": "62",
+      "Atomic_Number": 62,
       "Atomic_Weight": "150.36",
       "Density": "7.52",
       "Melting_Point": "1350",
@@ -1428,7 +1428,7 @@
     {
       "Name": "Europium",
       "Symbol": "Eu",
-      "Atomic_Number": "63",
+      "Atomic_Number": 63,
       "Atomic_Weight": "151.965",
       "Density": "5.243",
       "Melting_Point": "1095",
@@ -1451,7 +1451,7 @@
     {
       "Name": "Gadolinium",
       "Symbol": "Gd",
-      "Atomic_Number": "64",
+      "Atomic_Number": 64,
       "Atomic_Weight": "157.25",
       "Density": "7.9",
       "Melting_Point": "1586",
@@ -1474,7 +1474,7 @@
     {
       "Name": "Terbium",
       "Symbol": "Tb",
-      "Atomic_Number": "65",
+      "Atomic_Number": 65,
       "Atomic_Weight": "158.92534",
       "Density": "8.229",
       "Melting_Point": "1629",
@@ -1497,7 +1497,7 @@
     {
       "Name": "Dysprosium",
       "Symbol": "Dy",
-      "Atomic_Number": "66",
+      "Atomic_Number": 66,
       "Atomic_Weight": "162.5",
       "Density": "8.55",
       "Melting_Point": "1685",
@@ -1520,7 +1520,7 @@
     {
       "Name": "Holmium",
       "Symbol": "Ho",
-      "Atomic_Number": "67",
+      "Atomic_Number": 67,
       "Atomic_Weight": "164.93032",
       "Density": "8.795",
       "Melting_Point": "1747",
@@ -1543,7 +1543,7 @@
     {
       "Name": "Erbium",
       "Symbol": "Er",
-      "Atomic_Number": "68",
+      "Atomic_Number": 68,
       "Atomic_Weight": "167.26",
       "Density": "9.06",
       "Melting_Point": "1802",
@@ -1566,7 +1566,7 @@
     {
       "Name": "Thulium",
       "Symbol": "Tm",
-      "Atomic_Number": "69",
+      "Atomic_Number": 69,
       "Atomic_Weight": "168.93421",
       "Density": "9.321",
       "Melting_Point": "1818",
@@ -1589,7 +1589,7 @@
     {
       "Name": "Ytterbium",
       "Symbol": "Yb",
-      "Atomic_Number": "70",
+      "Atomic_Number": 70,
       "Atomic_Weight": "173.04",
       "Density": "6.9654",
       "Melting_Point": "1097",
@@ -1612,7 +1612,7 @@
     {
       "Name": "Lutetium",
       "Symbol": "Lu",
-      "Atomic_Number": "71",
+      "Atomic_Number": 71,
       "Atomic_Weight": "174.967",
       "Density": "9.8404",
       "Melting_Point": "1936",
@@ -1635,7 +1635,7 @@
     {
       "Name": "Hafnium",
       "Symbol": "Hf",
-      "Atomic_Number": "72",
+      "Atomic_Number": 72,
       "Atomic_Weight": "178.49",
       "Density": "13.31",
       "Melting_Point": "2503",
@@ -1658,7 +1658,7 @@
     {
       "Name": "Tantalum",
       "Symbol": "Ta",
-      "Atomic_Number": "73",
+      "Atomic_Number": 73,
       "Atomic_Weight": "180.9479",
       "Density": "16.654",
       "Melting_Point": "3269",
@@ -1681,7 +1681,7 @@
     {
       "Name": "Tungsten",
       "Symbol": "W",
-      "Atomic_Number": "74",
+      "Atomic_Number": 74,
       "Atomic_Weight": "183.84",
       "Density": "19.3",
       "Melting_Point": "3680",
@@ -1704,7 +1704,7 @@
     {
       "Name": "Rhenium",
       "Symbol": "Re",
-      "Atomic_Number": "75",
+      "Atomic_Number": 75,
       "Atomic_Weight": "186.207",
       "Density": "21.02",
       "Melting_Point": "3453",
@@ -1727,7 +1727,7 @@
     {
       "Name": "Osmium",
       "Symbol": "Os",
-      "Atomic_Number": "76",
+      "Atomic_Number": 76,
       "Atomic_Weight": "190.23",
       "Density": "22.57",
       "Melting_Point": "3327",
@@ -1750,7 +1750,7 @@
     {
       "Name": "Iridium",
       "Symbol": "Ir",
-      "Atomic_Number": "77",
+      "Atomic_Number": 77,
       "Atomic_Weight": "192.22",
       "Density": "22.42",
       "Melting_Point": "2683",
@@ -1773,7 +1773,7 @@
     {
       "Name": "Platinum",
       "Symbol": "Pt",
-      "Atomic_Number": "78",
+      "Atomic_Number": 78,
       "Atomic_Weight": "195.08",
       "Density": "21.45",
       "Melting_Point": "2045",
@@ -1796,7 +1796,7 @@
     {
       "Name": "Gold",
       "Symbol": "Au",
-      "Atomic_Number": "79",
+      "Atomic_Number": 79,
       "Atomic_Weight": "196.96654",
       "Density": "19.3",
       "Melting_Point": "1337.58",
@@ -1819,7 +1819,7 @@
     {
       "Name": "Mercury",
       "Symbol": "Hg",
-      "Atomic_Number": "80",
+      "Atomic_Number": 80,
       "Atomic_Weight": "200.59",
       "Density": "13.546 (@ +20degC)",
       "Melting_Point": "234.28",
@@ -1842,7 +1842,7 @@
     {
       "Name": "Thallium",
       "Symbol": "Tl",
-      "Atomic_Number": "81",
+      "Atomic_Number": 81,
       "Atomic_Weight": "204.3833",
       "Density": "11.85",
       "Melting_Point": "576.6",
@@ -1865,7 +1865,7 @@
     {
       "Name": "Lead",
       "Symbol": "Pb",
-      "Atomic_Number": "82",
+      "Atomic_Number": 82,
       "Atomic_Weight": "207.2",
       "Density": "11.35",
       "Melting_Point": "600.65",
@@ -1888,7 +1888,7 @@
     {
       "Name": "Bismuth",
       "Symbol": "Bi",
-      "Atomic_Number": "83",
+      "Atomic_Number": 83,
       "Atomic_Weight": "208.98037",
       "Density": "9.747",
       "Melting_Point": "544.5",
@@ -1911,7 +1911,7 @@
     {
       "Name": "Polonium",
       "Symbol": "Po",
-      "Atomic_Number": "84",
+      "Atomic_Number": 84,
       "Atomic_Weight": "208.9824",
       "Density": "9.32",
       "Melting_Point": "527",
@@ -1934,7 +1934,7 @@
     {
       "Name": "Astatine",
       "Symbol": "At",
-      "Atomic_Number": "85",
+      "Atomic_Number": 85,
       "Atomic_Weight": "209.9871",
       "Density": "-",
       "Melting_Point": "575",
@@ -1957,7 +1957,7 @@
     {
       "Name": "Radon",
       "Symbol": "Rn",
-      "Atomic_Number": "86",
+      "Atomic_Number": 86,
       "Atomic_Weight": "222.0176",
       "Density": "4.4 (@ -62degC)",
       "Melting_Point": "202",
@@ -1980,7 +1980,7 @@
     {
       "Name": "Francium",
       "Symbol": "Fr",
-      "Atomic_Number": "87",
+      "Atomic_Number": 87,
       "Atomic_Weight": "223.0197",
       "Density": "-",
       "Melting_Point": "300",
@@ -2003,7 +2003,7 @@
     {
       "Name": "Radium",
       "Symbol": "Ra",
-      "Atomic_Number": "88",
+      "Atomic_Number": 88,
       "Atomic_Weight": "226.0254",
       "Density": "<5.5>",
       "Melting_Point": "973",
@@ -2026,7 +2026,7 @@
     {
       "Name": "Actinium",
       "Symbol": "Ac",
-      "Atomic_Number": "89",
+      "Atomic_Number": 89,
       "Atomic_Weight": "227.0278",
       "Density": "-",
       "Melting_Point": "1320",
@@ -2049,7 +2049,7 @@
     {
       "Name": "Thorium",
       "Symbol": "Th",
-      "Atomic_Number": "90",
+      "Atomic_Number": 90,
       "Atomic_Weight": "232.0381",
       "Density": "11.78",
       "Melting_Point": "2028",
@@ -2072,7 +2072,7 @@
     {
       "Name": "Protactinium",
       "Symbol": "Pa",
-      "Atomic_Number": "91",
+      "Atomic_Number": 91,
       "Atomic_Weight": "231.03588",
       "Density": "15.37",
       "Melting_Point": "2113",
@@ -2095,7 +2095,7 @@
     {
       "Name": "Uranium",
       "Symbol": "U",
-      "Atomic_Number": "92",
+      "Atomic_Number": 92,
       "Atomic_Weight": "238.0289",
       "Density": "19.05",
       "Melting_Point": "1405.5",
@@ -2118,7 +2118,7 @@
     {
       "Name": "Neptunium",
       "Symbol": "Np",
-      "Atomic_Number": "93",
+      "Atomic_Number": 93,
       "Atomic_Weight": "237.048",
       "Density": "20.25",
       "Melting_Point": "913",
@@ -2141,7 +2141,7 @@
     {
       "Name": "Plutonium",
       "Symbol": "Pu",
-      "Atomic_Number": "94",
+      "Atomic_Number": 94,
       "Atomic_Weight": "244.0642",
       "Density": "19.84",
       "Melting_Point": "914",
@@ -2164,7 +2164,7 @@
     {
       "Name": "Americium",
       "Symbol": "Am",
-      "Atomic_Number": "95",
+      "Atomic_Number": 95,
       "Atomic_Weight": "243.0614",
       "Density": "13.67",
       "Melting_Point": "1267",
@@ -2187,7 +2187,7 @@
     {
       "Name": "Curium",
       "Symbol": "Cm",
-      "Atomic_Number": "96",
+      "Atomic_Number": 96,
       "Atomic_Weight": "247.0703",
       "Density": "13.51",
       "Melting_Point": "1340",
@@ -2210,7 +2210,7 @@
     {
       "Name": "Berkelium",
       "Symbol": "Bk",
-      "Atomic_Number": "97",
+      "Atomic_Number": 97,
       "Atomic_Weight": "247.0703",
       "Density": "13.25",
       "Melting_Point": "-",
@@ -2233,7 +2233,7 @@
     {
       "Name": "Californium",
       "Symbol": "Cf",
-      "Atomic_Number": "98",
+      "Atomic_Number": 98,
       "Atomic_Weight": "251.0796",
       "Density": "15.1",
       "Melting_Point": "900",
@@ -2256,7 +2256,7 @@
     {
       "Name": "Einsteinium",
       "Symbol": "Es",
-      "Atomic_Number": "99",
+      "Atomic_Number": 99,
       "Atomic_Weight": "252.083",
       "Density": "-",
       "Melting_Point": "-",
@@ -2279,7 +2279,7 @@
     {
       "Name": "Fermium",
       "Symbol": "Fm",
-      "Atomic_Number": "100",
+      "Atomic_Number": 100,
       "Atomic_Weight": "257.0951",
       "Density": "-",
       "Melting_Point": "1800",
@@ -2302,7 +2302,7 @@
     {
       "Name": "Mendelevium",
       "Symbol": "Md",
-      "Atomic_Number": "101",
+      "Atomic_Number": 101,
       "Atomic_Weight": "258.1",
       "Density": "-",
       "Melting_Point": "1100",
@@ -2325,7 +2325,7 @@
     {
       "Name": "Nobelium",
       "Symbol": "No",
-      "Atomic_Number": "102",
+      "Atomic_Number": 102,
       "Atomic_Weight": "259.1009",
       "Density": "-",
       "Melting_Point": "1100",
@@ -2348,7 +2348,7 @@
     {
       "Name": "Lawrencium",
       "Symbol": "Lr",
-      "Atomic_Number": "103",
+      "Atomic_Number": 103,
       "Atomic_Weight": "262.11",
       "Density": "-",
       "Melting_Point": "-",
@@ -2371,7 +2371,7 @@
     {
       "Name": "Rutherfordium",
       "Symbol": "Rf",
-      "Atomic_Number": "104",
+      "Atomic_Number": 104,
       "Atomic_Weight": "[261]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2394,7 +2394,7 @@
     {
       "Name": "Dubnium",
       "Symbol": "Db",
-      "Atomic_Number": "105",
+      "Atomic_Number": 105,
       "Atomic_Weight": "[262]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2417,7 +2417,7 @@
     {
       "Name": "Seaborgium",
       "Symbol": "Sg",
-      "Atomic_Number": "106",
+      "Atomic_Number": 106,
       "Atomic_Weight": "[266]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2440,7 +2440,7 @@
     {
       "Name": "Bohrium",
       "Symbol": "Bh",
-      "Atomic_Number": "107",
+      "Atomic_Number": 107,
       "Atomic_Weight": "[264]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2463,7 +2463,7 @@
     {
       "Name": "Hassium",
       "Symbol": "Hs",
-      "Atomic_Number": "108",
+      "Atomic_Number": 108,
       "Atomic_Weight": "[269]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2486,7 +2486,7 @@
     {
       "Name": "Meitnerium",
       "Symbol": "Mt",
-      "Atomic_Number": "109",
+      "Atomic_Number": 109,
       "Atomic_Weight": "[268]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2509,7 +2509,7 @@
     {
       "Name": "Ununnilium",
       "Symbol": "Uun",
-      "Atomic_Number": "110",
+      "Atomic_Number": 110,
       "Atomic_Weight": "[269]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2532,7 +2532,7 @@
     {
       "Name": "Unununium",
       "Symbol": "Uuu",
-      "Atomic_Number": "111",
+      "Atomic_Number": 111,
       "Atomic_Weight": "[272]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2555,7 +2555,7 @@
     {
       "Name": "Ununbium",
       "Symbol": "Uub",
-      "Atomic_Number": "112",
+      "Atomic_Number": 112,
       "Atomic_Weight": "[277]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2578,7 +2578,7 @@
     {
       "Name": "Ununtrium",
       "Symbol": "Uut",
-      "Atomic_Number": "113",
+      "Atomic_Number": 113,
       "Atomic_Weight": "-",
       "Density": "-",
       "Melting_Point": "-",
@@ -2601,7 +2601,7 @@
     {
       "Name": "Ununquadium",
       "Symbol": "Uuq",
-      "Atomic_Number": "114",
+      "Atomic_Number": 114,
       "Atomic_Weight": "[289]",
       "Density": "-",
       "Melting_Point": "-",
@@ -2624,7 +2624,7 @@
     {
       "Name": "Ununpentium",
       "Symbol": "Uup",
-      "Atomic_Number": "115",
+      "Atomic_Number": 115,
       "Atomic_Weight": "-",
       "Density": "-",
       "Melting_Point": "-",
@@ -2647,7 +2647,7 @@
     {
       "Name": "Ununhexium",
       "Symbol": "Uuh",
-      "Atomic_Number": "116",
+      "Atomic_Number": 116,
       "Atomic_Weight": "-",
       "Density": "-",
       "Melting_Point": "-",
@@ -2670,7 +2670,7 @@
     {
       "Name": "Ununseptium",
       "Symbol": "Uus",
-      "Atomic_Number": "117",
+      "Atomic_Number": 117,
       "Atomic_Weight": "-",
       "Density": "-",
       "Melting_Point": "-",
@@ -2693,7 +2693,7 @@
     {
       "Name": "Ununoctium",
       "Symbol": "Uuo",
-      "Atomic_Number": "118",
+      "Atomic_Number": 118,
       "Atomic_Weight": "-",
       "Density": "-",
       "Melting_Point": "-",
