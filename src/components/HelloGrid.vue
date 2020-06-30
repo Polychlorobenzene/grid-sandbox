@@ -26,6 +26,7 @@
 
     import grid from "./grid.vue"
     import periodicTable from "../assets/periodicTable.json"
+    import ColumnMetadata from "../models/ColumnMetadata"
 
     @Component({
         components: {
@@ -36,21 +37,31 @@
         // Not specifying any causes compilation error
         // eslint-disable-next-line
         gridData: any[] = []
-        gridColumns: string[] = []
+        gridColumns: ColumnMetadata[] = []
         gridPageRange = 3
         rowIdentifier = "Atomic_Number"
         recordsPerPage = 10
 
         //functions
         getData() {
+            this.gridColumns
             this.gridData = periodicTable
-            const columns = ["Symbol", "Name", "Melting_Point", "Boiling_Point"]
+            const columns: Array<ColumnMetadata> = [
+                { column: "Symbol", isNumeric: false, validation: null },
+                { column: "Name", isNumeric: false, validation: null },
+                { column: "Melting_Point", isNumeric: false, validation: null },
+                { column: "Boiling_Point", isNumeric: false, validation: null }
+            ]
             this.gridColumns = columns
         }
         clearData() {
             this.gridData = []
             if (!this.gridColumns || this.gridColumns.length < 1) {
-                const columns = ["column 1", "column 2", "column 3"]
+                const columns = [
+                    { column: "column 1", isNumeric: false, validation: null },
+                    { column: "column 2", isNumeric: false, validation: null },
+                    { column: "column 3", isNumeric: false, validation: null }
+                ]
                 this.gridColumns = columns
                 this.rowIdentifier = "id"
             }
