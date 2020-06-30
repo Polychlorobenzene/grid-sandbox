@@ -88,7 +88,7 @@
             <thead>
                 <tr>
                     <th
-                        v-if="dataColumns.length > 0 && rowIdentifier"
+                        v-if="columnList.length > 0 && rowIdentifier"
                         :key="rowIdentifier"
                         @click="sortBy(`${rowIdentifier}`)"
                         :class="{ active: sortKey == rowIdentifier }"
@@ -98,11 +98,12 @@
                             :class="
                                 sortOrders[rowIdentifier] > 0 ? 'asc' : 'dsc'
                             "
-                        />
+                        >
+                        </span>
                         {{ rowIdentifier }}
                     </th>
                     <th
-                        v-for="key in dataColumns"
+                        v-for="key in columnList"
                         :key="key"
                         @click="sortBy(key)"
                         :class="{ active: sortKey == key }"
@@ -112,7 +113,7 @@
                         <span
                             class="arrow"
                             :class="sortOrders[key] > 0 ? 'asc' : 'dsc'"
-                        />
+                        ></span>
                     </th>
                 </tr>
             </thead>
@@ -135,7 +136,7 @@
                         {{ entry[`${rowIdentifier}`] }}
                     </td>
 
-                    <td v-for="key in dataColumns" :key="key">
+                    <td v-for="key in columnList" :key="key">
                         {{ entry[key] }}
                     </td>
                 </tr>
@@ -163,7 +164,7 @@
                             <grid-detail
                                 v-if="selectedRecord"
                                 :record="selectedRecord"
-                                :fieldsToBind="dataColumns"
+                                :fieldsToBind="columnList"
                                 @persisted-record="persistDetails"
                                 @cancel="cancelEdit"
                             />
@@ -181,27 +182,30 @@
 
     import gridDetail from "./gridDetail.vue"
     import GridPage from "../models/GridPage"
+    import IColumnMetadata from "../models/ColumnMetadata"
 
     @Component({
         components: {
             gridDetail
         },
         filters: {
-            capitalize(str: string) {
-                return str.charAt(0).toUpperCase() + str.slice(1)
+            capitalize(str: string | undefined) {
+                if (str) {
+                    return str.charAt(0).toUpperCase() + str.slice(1)
+                } else return str
             }
         }
     })
     export default class DataGrid extends Vue {
         @Prop() private data!: Record<string, any>[]
         @Prop() private rowIdentifier!: string
-        @Prop() private columns!: string[]
+        @Prop() private columns!: IColumnMetadata[]
         @Prop() private pageSpan!: number
         @Prop({ default: 10 }) private recordsPerPage!: number
         //data
         timer: number | null = null
         selectedRowIds: number[] | null = null
-        dataColumnsStaging: string[] = []
+        dataColumnsStaging: IColumnMetadata[] = []
         selectedRecordStaging: Record<string, any> | null = null
         filterTextBuffer = ""
         private filterTextDelayed: string | null = null
@@ -254,6 +258,16 @@
         @Emit("record-saved")
         persistDetails(value: Record<string, any>) {
             this.selectedRecord = value
+            //Set the known numeric fields to numeric values
+            for (let index = 0; index < this.dataColumns.length; index++) {
+                const columnMetadata = this.dataColumns[index]
+                const columnName = columnMetadata.column
+                if (columnMetadata.isNumeric) {
+                    this.selectedRecord[columnName] = +this.selectedRecord[
+                        columnName
+                    ]
+                }
+            }
             const oldLink = document.getElementById("edit-" + this.rowIdToEdit)
             if (oldLink) {
                 oldLink.innerText = "edit"
@@ -274,8 +288,14 @@
             const newId = maxId && maxId !== -Infinity ? maxId + 1 : 1
             record[this.rowIdentifier] = newId
             if (this.dataColumns && this.dataColumns.length > 0) {
-                for (let col = 0; col < this.dataColumns.length; col++) {
-                    record[this.dataColumns[col]] = ""
+                for (let index = 0; index < this.dataColumns.length; index++) {
+                    const columnMetadata = this.dataColumns[index]
+                    const columnName = columnMetadata.column
+                    //TODO: evaluate whether transforming the data here makes any sense
+                    record[columnName] = null as unknown
+                    if (columnMetadata.isNumeric) {
+                        record[columnName] = record[columnName] as number
+                    }
                 }
             }
             if (this.currentPage === 1) {
@@ -392,17 +412,22 @@
         set filterText(value: string | null) {
             this.filterTextDelayed = value
         }
-        get dataColumns(): string[] {
+        get dataColumns(): IColumnMetadata[] {
             if (this.columns && this.columns.length > 0) {
                 this.dataColumnsStaging = this.columns
             } else if (
                 this.data.length > 0 &&
                 this.dataColumnsStaging.length < 1
             ) {
-                const fields: string[] = []
+                const fields: IColumnMetadata[] = []
                 const record = this.data[0]
                 Object.keys(record).forEach((k: string) => {
-                    fields.push(k)
+                    const columnMedata: IColumnMetadata = {
+                        column: k,
+                        isNumeric: record[k].isNumeric(),
+                        validation: null
+                    }
+                    fields.push(columnMedata)
                 })
                 this.dataColumnsStaging = fields
             }
@@ -422,7 +447,9 @@
                 this.filteredData = this.filteredData.filter((o) => {
                     return Object.keys(o)
                         .filter((k) => {
-                            return this.dataColumns.includes(k)
+                            return this.dataColumns
+                                .map((x) => x.column)
+                                .includes(k)
                         })
                         .some((k) => {
                             return (
@@ -432,9 +459,6 @@
                             )
                         })
                 })
-                // if (this.currentPage > this.pageCount) {
-                //     this.currentPage = 1
-                // }
             }
             if (this.sortKey.length > 0) {
                 if (this.browserSupportsLocaleCompare) {
@@ -530,11 +554,14 @@
             )
             return [...intersection]
         }
+        get columnList(): string[] {
+            return this.dataColumns.map((x) => x.column)
+        }
 
         //lifecycle
         mounted() {
             this.dataColumns.forEach((key) => {
-                this.sortOrders[key] = -1
+                this.sortOrders[key.column] = -1
             })
             //Add sorting for the key row if present
             if (this.rowIdentifier && this.rowIdentifier.length > 0)
@@ -559,6 +586,7 @@
     .record-details {
         text-align: right;
     }
+
     .highlight {
         background-color: yellow;
     }
@@ -566,6 +594,7 @@
     tr.highlight td {
         background-color: yellow;
     }
+
     .page-span {
         display: inline-block;
         min-width: 7em;
@@ -577,6 +606,7 @@
         font-weight: bold;
         font-size: larger;
     }
+
     .icon {
         margin-left: 0.2rem;
         margin-right: 0.2rem;
