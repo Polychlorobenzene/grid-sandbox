@@ -126,6 +126,7 @@
                 >
                     <td v-if="rowIdentifier">
                         <a
+                            v-if="!isReadOnly"
                             href
                             :id="'edit-' + entry[`${rowIdentifier}`]"
                             @click.stop.prevent="
@@ -140,7 +141,7 @@
                         {{ entry[key] }}
                     </td>
                 </tr>
-                <tr>
+                <tr v-if="!isReadOnly">
                     <td>
                         <button @click.prevent="addRecord">
                             <font-awesome-icon
@@ -201,7 +202,8 @@
         @Prop() private rowIdentifier!: string
         @Prop() private columns!: IColumnMetadata[]
         @Prop() private pageSpan!: number
-        @Prop({ default: 10 }) private recordsPerPage!: number
+        @Prop({ default: 10 }) private displayRecordsPerPage!: number
+        @Prop({ default: false }) private isReadOnly!: boolean
         //data
         timer: number | null = null
         selectedRowIds: number[] | null = null
@@ -362,17 +364,19 @@
             }
         }
         selectRow(id: number) {
-            const row = document.getElementById("row" + id)
-            if (!this.selectedRowIds) this.selectedRowIds = []
-            if (row) {
-                if (!row.hasAttribute("class")) {
-                    row.setAttribute("class", "highlight")
-                    this.selectedRowIds.push(id)
-                } else {
-                    row.removeAttribute("class")
-                    this.selectedRowIds = this.selectedRowIds.filter(
-                        (v) => v !== id
-                    )
+            if (!this.isReadOnly) {
+                const row = document.getElementById("row" + id)
+                if (!this.selectedRowIds) this.selectedRowIds = []
+                if (row) {
+                    if (!row.hasAttribute("class")) {
+                        row.setAttribute("class", "highlight")
+                        this.selectedRowIds.push(id)
+                    } else {
+                        row.removeAttribute("class")
+                        this.selectedRowIds = this.selectedRowIds.filter(
+                            (v) => v !== id
+                        )
+                    }
                 }
             }
         }
@@ -556,6 +560,11 @@
         }
         get columnList(): string[] {
             return this.dataColumns.map((x) => x.column)
+        }
+        get recordsPerPage() {
+            if (this.displayRecordsPerPage === 0) {
+                return this.data.length
+            } else return this.displayRecordsPerPage
         }
 
         //lifecycle

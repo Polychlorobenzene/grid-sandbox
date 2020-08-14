@@ -8,13 +8,23 @@
             Get Data
         </button>
         <button @click.prevent="clearData">Empty Grid</button>
+        <input id="readOnly" type="checkbox" v-model="isReadOnly" />
+        <label for="readOnly">is Read Only</label>
+        <select v-model="recordsPerPage" name="recordsPerPage">
+            <option value="0">No Paging</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+        </select>
         <grid
             v-if="gridData && gridColumns && gridColumns.length > 0"
             :data="gridData"
             :columns="gridColumns"
             :pageSpan="gridPageRange"
             :rowIdentifier="rowIdentifier"
-            :recordsPerPage="recordsPerPage"
+            :displayRecordsPerPage="recordsPerPage"
+            :isReadOnly="isReadOnly"
             @record-added="addRecord"
             @records-deleted="deleteRecords"
         />
@@ -41,6 +51,7 @@
         gridPageRange = 3
         rowIdentifier = "Atomic_Number"
         recordsPerPage = 10
+        isReadOnly = false
 
         //functions
         getData() {
