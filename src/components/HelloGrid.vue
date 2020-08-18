@@ -28,6 +28,12 @@
             @record-added="addRecord"
             @records-deleted="deleteRecords"
         />
+        <currency-input
+            :amount="amount"
+            @data-changed="textChanged"
+            id="textCurrency"
+            :isDisabled="isReadOnly"
+        />
     </div>
 </template>
 
@@ -35,12 +41,14 @@
     import { Component, Vue } from "vue-property-decorator"
 
     import grid from "./grid.vue"
+    import CurrencyInput from "./currencyInput.vue"
     import periodicTable from "../assets/periodicTable.json"
     import ColumnMetadata from "../models/ColumnMetadata"
 
     @Component({
         components: {
-            grid
+            grid,
+            CurrencyInput
         }
     })
     export default class HelloGrid extends Vue {
@@ -52,6 +60,7 @@
         rowIdentifier = "Atomic_Number"
         recordsPerPage = 10
         isReadOnly = false
+        amount = 300
 
         //functions
         getData() {
@@ -89,6 +98,9 @@
         addRecord(record: Record<string, unknown>) {
             //alert("Record Added:" + JSON.stringify(record))
             //this.gridData.splice(0, 0, record)
+        }
+        textChanged(value: number) {
+            this.amount = value
         }
     }
 </script>
