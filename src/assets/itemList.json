@@ -1,0 +1,20 @@
+[
+    {
+    "Id":1,
+    "Name":"stereo",
+    "Price":125.99,
+    "Markup":1.25
+    },
+    {
+    "Id":2,
+    "Name":"headphones",
+    "Price":24.99,
+    "Markup":0.75
+    },
+    {
+    "Id":3,
+    "Name":300,
+    "Price":24.99,
+    "Markup":0.75
+    }
+]

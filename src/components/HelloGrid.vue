@@ -29,8 +29,7 @@
             @records-deleted="deleteRecords"
         />
         <currency-input
-            :amount="amount"
-            @data-changed="textChanged"
+            v-model="amount"
             id="textCurrency"
             :isDisabled="isReadOnly"
         />
@@ -41,14 +40,15 @@
     import { Component, Vue } from "vue-property-decorator"
 
     import grid from "./grid.vue"
-    import CurrencyInput from "./currencyInput.vue"
-    import periodicTable from "../assets/periodicTable.json"
+    import currencyInput from "./currencyInput.vue"
+    //import periodicTable from "../assets/periodicTable.json"
+    import itemList from "../assets/itemList.json"
     import ColumnMetadata from "../models/ColumnMetadata"
 
     @Component({
         components: {
             grid,
-            CurrencyInput
+            currencyInput
         }
     })
     export default class HelloGrid extends Vue {
@@ -57,7 +57,7 @@
         gridData: any[] = []
         gridColumns: ColumnMetadata[] = []
         gridPageRange = 3
-        rowIdentifier = "Atomic_Number"
+        rowIdentifier = "Id" //"Atomic_Number"
         recordsPerPage = 10
         isReadOnly = false
         amount = 300
@@ -65,12 +65,39 @@
         //functions
         getData() {
             this.gridColumns
-            this.gridData = periodicTable
+            this.gridData = itemList //periodicTable
             const columns: Array<ColumnMetadata> = [
-                { column: "Symbol", isNumeric: false, validation: null },
-                { column: "Name", isNumeric: false, validation: null },
-                { column: "Melting_Point", isNumeric: false, validation: null },
-                { column: "Boiling_Point", isNumeric: false, validation: null }
+                {
+                    column: "Name",
+                    isNumeric: false,
+                    format: (value: string) => {
+                        return value
+                    }
+                },
+                {
+                    column: "Price",
+                    isNumeric: true,
+                    isCurrency: true,
+                    format: (value: number) => {
+                        const formatter = new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD"
+                        })
+                        return formatter.format(value)
+                    }
+                },
+                {
+                    column: "Markup",
+                    isNumeric: true,
+                    isCurrency: true,
+                    format: (value: number) => {
+                        const formatter = new Intl.NumberFormat("en-US", {
+                            style: "currency",
+                            currency: "USD"
+                        })
+                        return formatter.format(value)
+                    }
+                }
             ]
             this.gridColumns = columns
         }
@@ -78,9 +105,27 @@
             this.gridData = []
             if (!this.gridColumns || this.gridColumns.length < 1) {
                 const columns = [
-                    { column: "column 1", isNumeric: false, validation: null },
-                    { column: "column 2", isNumeric: false, validation: null },
-                    { column: "column 3", isNumeric: false, validation: null }
+                    {
+                        column: "column 1",
+                        isNumeric: false,
+                        format: (value: any) => {
+                            value
+                        }
+                    },
+                    {
+                        column: "column 2",
+                        isNumeric: false,
+                        format: (value: any) => {
+                            value
+                        }
+                    },
+                    {
+                        column: "column 3",
+                        isNumeric: false,
+                        format: (value: any) => {
+                            value
+                        }
+                    }
                 ]
                 this.gridColumns = columns
                 this.rowIdentifier = "id"

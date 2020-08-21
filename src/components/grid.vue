@@ -137,8 +137,8 @@
                         {{ entry[`${rowIdentifier}`] }}
                     </td>
 
-                    <td v-for="key in columnList" :key="key">
-                        {{ entry[key] }}
+                    <td v-for="key in columns" :key="key.column">
+                        {{ key.format(entry[key.column]) }}
                     </td>
                 </tr>
                 <tr v-if="!isReadOnly">
@@ -165,7 +165,7 @@
                             <grid-detail
                                 v-if="selectedRecord"
                                 :record="selectedRecord"
-                                :fieldsToBind="columnList"
+                                :fieldsToBind="columns"
                                 @persisted-record="persistDetails"
                                 @cancel="cancelEdit"
                             />
@@ -194,6 +194,14 @@
                 if (str) {
                     return str.charAt(0).toUpperCase() + str.slice(1)
                 } else return str
+            },
+            formatMoney(value: number | any) {
+                const currencyFormatter: any = new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD"
+                })
+
+                return isNaN(value) ? value : currencyFormatter.format(value)
             }
         }
     })
@@ -429,7 +437,9 @@
                     const columnMedata: IColumnMetadata = {
                         column: k,
                         isNumeric: record[k].isNumeric(),
-                        validation: null
+                        format: (value: any) => {
+                            value
+                        }
                     }
                     fields.push(columnMedata)
                 })
@@ -442,7 +452,7 @@
             const textKey: string = filterKey ? filterKey : ""
             const startIndex: number =
                 (this.currentPage - 1) * this.recordsPerPage
-            this.filteredData = this.data
+            this.filteredData = this.data.slice()
             let displayData = []
             let sortedData: any[] = []
             const key = this.sortKey
@@ -497,6 +507,7 @@
             if (this.currentPage > this.pageCount) {
                 this.currentPage = 1
             }
+
             return displayData
         }
         get pageCount(): number {
@@ -569,6 +580,20 @@
 
         //lifecycle
         mounted() {
+            const currencyFormatter = new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD"
+            })
+            this.data.forEach((obj) => {
+                this.columns
+                    .filter((o) => o.column !== this.rowIdentifier)
+                    .forEach((col) => {
+                        const isCurrency = col.isCurrency ? true : false
+                        obj[col.column + "Formatted"] = isCurrency
+                            ? currencyFormatter.format(obj[col.column])
+                            : obj[col.column]
+                    })
+            })
             this.dataColumns.forEach((key) => {
                 this.sortOrders[key.column] = -1
             })

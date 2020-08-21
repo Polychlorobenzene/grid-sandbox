@@ -1,37 +1,43 @@
 <template>
-    <div v-if="!isDisabled">
+    <span v-if="!isDisabled">
         <input
             v-if="isEditing"
             :id="id"
+            :ref="reference"
             v-model="numericValue"
             @blur="dataChanged"
         />
-        <input v-else :id="id" v-model="value" @click="isEditing = true" />
-    </div>
-    <div v-else>
-        <input :id="id" disabled :value="value" />
-    </div>
+        <input
+            v-else
+            :id="id"
+            :ref="reference"
+            v-model="formattedValue"
+            @click="isEditing = true"
+        />
+    </span>
+    <span v-else>
+        <input :id="id" disabled :value="formattedValue" :ref="reference" />
+    </span>
 </template>
 <script lang="ts">
     import { Component, Emit, Prop, Vue } from "vue-property-decorator"
 
     @Component
     export default class CurrencyInput extends Vue {
-        @Prop() amount!: number
+        @Prop() value!: number
         @Prop() currencyFilterName: string | undefined
         @Prop() id!: string
         @Prop() isDisabled: boolean | undefined
+        reference = this.id + "_currency"
         isEditing = false
         numericValue = 0
-        formattedValue = 0
-        @Emit("data-changed")
+        @Emit("input")
         dataChanged() {
-            this.formattedValue = this.numericValue
             this.isEditing = false
             return this.numericValue
         }
         //computed
-        get value(): string {
+        get formattedValue(): string {
             if (
                 this.currencyFilterName &&
                 this.$options &&
@@ -39,7 +45,7 @@
                 this.$options.filters[this.currencyFilterName]
             ) {
                 const response = this.$options.filters[this.currencyFilterName](
-                    this.amount
+                    this.numericValue
                 )
                 return response
             } else {
@@ -47,12 +53,12 @@
                     style: "currency",
                     currency: "USD"
                 })
-                const response = currencyFormatter.format(this.amount)
+                const response = currencyFormatter.format(this.numericValue)
                 return response
             }
         }
         mounted() {
-            this.numericValue = this.amount
+            this.numericValue = this.value
         }
     }
 </script>
