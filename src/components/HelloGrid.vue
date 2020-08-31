@@ -141,11 +141,10 @@
             }
         }
         addRecord(record: Record<string, unknown>) {
-            //alert("Record Added:" + JSON.stringify(record))
-            //this.gridData.splice(0, 0, record)
+            //This is where the record would be persisted to its store
         }
-        textChanged(value: number) {
-            this.amount = value
+        textChanged(value: string) {
+            this.amount = +value
         }
     }
 </script>

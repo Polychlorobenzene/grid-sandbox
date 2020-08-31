@@ -1,64 +1,82 @@
 <template>
-    <span v-if="!isDisabled">
+    <span v-if="!isDisabled" class="currency-input-class-style">
         <input
-            v-if="isEditing"
             :id="id"
             :ref="reference"
-            v-model="numericValue"
+            v-model="valueBuffer"
             @blur="dataChanged"
-        />
-        <input
-            v-else
-            :id="id"
-            :ref="reference"
-            v-model="formattedValue"
-            @click="isEditing = true"
         />
     </span>
     <span v-else>
-        <input :id="id" disabled :value="formattedValue" :ref="reference" />
+        <input :id="id" :ref="reference" :v-model="valueBuffer" disabled />
     </span>
 </template>
+
 <script lang="ts">
-    import { Component, Emit, Prop, Vue } from "vue-property-decorator"
+    import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator"
+    import Inputmask from "inputmask"
 
     @Component
     export default class CurrencyInput extends Vue {
-        @Prop() value!: number
-        @Prop() currencyFilterName: string | undefined
+        @Prop() private initialValue: string | undefined
         @Prop() id!: string
+        @Prop() value!: string
         @Prop() isDisabled: boolean | undefined
+        //data
         reference = this.id + "_currency"
-        isEditing = false
-        numericValue = 0
-        @Emit("input")
-        dataChanged() {
-            this.isEditing = false
-            return this.numericValue
-        }
-        //computed
-        get formattedValue(): string {
-            if (
-                this.currencyFilterName &&
-                this.$options &&
-                this.$options.filters &&
-                this.$options.filters[this.currencyFilterName]
-            ) {
-                const response = this.$options.filters[this.currencyFilterName](
-                    this.numericValue
-                )
-                return response
-            } else {
-                const currencyFormatter = new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD"
+        valueBuffer: string = this.value
+        unmaskedBuffer: string | undefined
+        //computed and watch
+        get valueUnmasked(): string {
+            if (this.unmaskedBuffer)
+                return Inputmask.unmask(this.unmaskedBuffer, {
+                    alias: "usCurrency"
                 })
-                const response = currencyFormatter.format(this.numericValue)
-                return response
-            }
+            else return this.valueBuffer
         }
+        @Watch("isDisabled") onIsDisabledChanged() {
+            //Forces the mask to re-evaluate when disabled state changes
+            this.$nextTick(() => {
+                Inputmask.extendAliases({
+                    usCurrency: {
+                        alias: "currency",
+                        allowMinus: false,
+                        prefix: "$"
+                    }
+                })
+                Inputmask({ alias: "usCurrency" }).mask(this.id)
+                Inputmask.setValue(this.id, this.valueBuffer)
+            })
+        }
+        //events
+        @Emit("input")
+        dataChanged(val: Event) {
+            const eventTarget = val.target as HTMLInputElement
+            const targetVal = eventTarget.value
+            this.unmaskedBuffer = targetVal
+            console.info(
+                `maskedValue = ${targetVal} and unmasked = ${this.valueUnmasked}`
+            )
+            return this.valueUnmasked
+        }
+        //lifecycle
         mounted() {
-            this.numericValue = this.value
+            Inputmask.extendAliases({
+                usCurrency: {
+                    alias: "currency",
+                    allowMinus: false,
+                    prefix: "$"
+                }
+            })
+            Inputmask({ alias: "usCurrency" }).mask(this.id)
+            if (this.initialValue) this.value = this.initialValue
         }
     }
 </script>
+
+<style scoped>
+    .currency-input-class-style {
+        color: black;
+        text-align: left;
+    }
+</style>

@@ -35,8 +35,6 @@
         @Prop() private record!: Record<string, unknown>
         @Prop({ default: null })
         private fieldsToBind!: IColumnMetadata[] | null
-        @Prop({ default: false })
-        private isAdd!: boolean
         fields: string[] = []
         @Emit("persisted-record")
         persistRecord() {
