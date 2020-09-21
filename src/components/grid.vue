@@ -1,6 +1,6 @@
 <template>
     <div class="dataGrid">
-        <div v-if="pageCount" id="gridNavTop">
+        <div v-if="pageCount || filterText.length > 0" id="gridNavTop">
             <h3>Results Page: {{ currentPage }} out of {{ pageCount }}</h3>
             <a
                 :disabled="isFirstPage"
@@ -76,13 +76,19 @@
                     class="icon"
                 />
             </a>
+            <label for="filter">Filter</label>
             <input
                 type="text"
                 id="filter"
                 v-model="filterTextBuffer"
                 @keyup="delayFilter"
             />
-            <label for="filter">Filter</label>
+            <button
+                type="button"
+                @click.prevent="filterText = filterTextBuffer = ''"
+            >
+                X
+            </button>
         </div>
         <table>
             <thead>
