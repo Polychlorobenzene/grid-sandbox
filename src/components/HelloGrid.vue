@@ -14,7 +14,7 @@
             :columns="gridColumns"
             :pageSpan="gridPageRange"
             :rowIdentifier="rowIdentifier"
-            :recordsPerPage="recordsPerPage"
+            :displayRecordsPerPage="recordsPerPage"
             @record-added="addRecord"
             @records-deleted="deleteRecords"
         />
@@ -47,10 +47,56 @@
             this.gridColumns
             this.gridData = periodicTable
             const columns: Array<ColumnMetadata> = [
-                { column: "Symbol", isNumeric: false, validation: null },
-                { column: "Name", isNumeric: false, validation: null },
-                { column: "Melting_Point", isNumeric: false, validation: null },
-                { column: "Boiling_Point", isNumeric: false, validation: null }
+                {
+                    column: "Symbol",
+                    isNumeric: false,
+                    format: (value: string) => {
+                        return value
+                    },
+                    order: 1
+                },
+                {
+                    column: "Name",
+                    isNumeric: false,
+                    format: (value: string) => {
+                        return value
+                    },
+                    order: 2
+                },
+                {
+                    column: "Melting_Point",
+                    isNumeric: true,
+                    format: (value: string) => {
+                        return value
+                    },
+                    order: 3
+                },
+                {
+                    column: "Boiling_Point",
+                    isNumeric: true,
+                    format: (value: string) => {
+                        return value
+                    },
+                    order: 4
+                },
+                {
+                    column: "Lattice",
+                    isNumeric: false,
+                    isSelect: true,
+                    selectValues: [
+                        "HEX",
+                        "BCC",
+                        "TET",
+                        "CUB",
+                        "MCL",
+                        "DIA",
+                        "RHL"
+                    ],
+                    format: (value: string) => {
+                        return value
+                    },
+                    order: 5
+                }
             ]
             this.gridColumns = columns
         }
@@ -58,9 +104,30 @@
             this.gridData = []
             if (!this.gridColumns || this.gridColumns.length < 1) {
                 const columns = [
-                    { column: "column 1", isNumeric: false, validation: null },
-                    { column: "column 2", isNumeric: false, validation: null },
-                    { column: "column 3", isNumeric: false, validation: null }
+                    {
+                        column: "column 1",
+                        isNumeric: false,
+                        format: (value: string) => {
+                            return value
+                        },
+                        order: 1
+                    },
+                    {
+                        column: "column 2",
+                        isNumeric: false,
+                        format: (value: string) => {
+                            return value
+                        },
+                        order: 2
+                    },
+                    {
+                        column: "column 3",
+                        isNumeric: false,
+                        format: (value: string) => {
+                            return value
+                        },
+                        order: 3
+                    }
                 ]
                 this.gridColumns = columns
                 this.rowIdentifier = "id"

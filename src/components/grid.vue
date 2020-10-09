@@ -1,81 +1,93 @@
 <template>
     <div class="dataGrid">
-        <div v-if="pageCount || filterText.length > 0" id="gridNavTop">
-            <h3>Results Page: {{ currentPage }} out of {{ pageCount }}</h3>
-            <a
-                :disabled="isFirstPage"
-                class="btn"
-                href
-                id="firstPage"
-                @click.prevent="getPageResults(1)"
+        <div id="gridNavTop">
+            <h3 v-if="pageCount && recordsPerPage > 0">
+                Results Page: {{ currentPage }} out of {{ pageCount }}
+            </h3>
+            <h3
+                v-else-if="
+                    data && data.length > 0 && filterText && filterText !== ''
+                "
             >
-                <font-awesome-icon
-                    :icon="['fas', 'angle-double-left']"
-                    title="First Page"
-                    aria-hidden="true"
-                    aria-label="First Page"
-                    class="icon"
-                />
-            </a>
-            <a
-                :disabled="isFirstPage"
-                class="btn"
-                id="previousPage"
-                @click.prevent="getPageResults(currentPage - 1)"
-            >
-                <font-awesome-icon
-                    :icon="['fas', 'angle-left']"
-                    title="First Page"
-                    aria-hidden="true"
-                    aria-label="Previous Page"
-                    class="icon"
-                />
-            </a>
-            <span class="page-span" id="page-span">
-                <span
-                    :id="'page-span-' + item.page"
-                    v-for="(item, index) in visiblePages"
-                    :key="item.page"
+                All results filtered out
+            </h3>
+            <h3 v-else-if="recordsPerPage > 0">No wage records entered</h3>
+            <span>
+                <a
+                    :disabled="isFirstPage"
+                    class="btn"
+                    href
+                    id="firstPage"
+                    @click.prevent="getPageResults(1)"
                 >
-                    <a
-                        href
-                        @click.prevent="getPageResults(item.page)"
-                        :class="item.isCurrentPage ? 'make-bold' : ''"
-                        >{{ item.page }}</a
+                    <font-awesome-icon
+                        :icon="['fas', 'angle-double-left']"
+                        title="First Page"
+                        aria-hidden="true"
+                        aria-label="First Page"
+                        class="icon"
+                    />
+                </a>
+                <a
+                    :disabled="isFirstPage"
+                    class="btn"
+                    id="previousPage"
+                    @click.prevent="getPageResults(currentPage - 1)"
+                >
+                    <font-awesome-icon
+                        :icon="['fas', 'angle-left']"
+                        title="First Page"
+                        aria-hidden="true"
+                        aria-label="Previous Page"
+                        class="icon"
+                    />
+                </a>
+                <span class="page-span" id="page-span">
+                    <span
+                        :id="'page-span-' + item.page"
+                        v-for="(item, index) in visiblePages"
+                        :key="item.page"
                     >
-                    <span v-if="index + 1 < visiblePages.length">,</span>
+                        <a
+                            href
+                            @click.prevent="getPageResults(item.page)"
+                            :class="item.isCurrentPage ? 'make-bold' : ''"
+                            >{{ item.page }}</a
+                        >
+                        <span v-if="index + 1 < visiblePages.length">,</span>
+                    </span>
                 </span>
+                <a
+                    :disabled="isLastPage"
+                    class="btn"
+                    href
+                    id="nextPage"
+                    @click.prevent="getPageResults(currentPage + 1)"
+                >
+                    <font-awesome-icon
+                        :icon="['fas', 'angle-right']"
+                        title="First Page"
+                        aria-hidden="true"
+                        aria-label="Next Page"
+                        class="icon"
+                    />
+                </a>
+                <a
+                    :disabled="isLastPage"
+                    class="btn"
+                    href
+                    id="lastPage"
+                    @click.prevent="getPageResults(pageCount)"
+                >
+                    <font-awesome-icon
+                        :icon="['fas', 'angle-double-right']"
+                        title="First Page"
+                        aria-hidden="true"
+                        aria-label="Last Page"
+                        class="icon"
+                    />
+                </a>
             </span>
-            <a
-                :disabled="isLastPage"
-                class="btn"
-                href
-                id="nextPage"
-                @click.prevent="getPageResults(currentPage + 1)"
-            >
-                <font-awesome-icon
-                    :icon="['fas', 'angle-right']"
-                    title="First Page"
-                    aria-hidden="true"
-                    aria-label="Next Page"
-                    class="icon"
-                />
-            </a>
-            <a
-                :disabled="isLastPage"
-                class="btn"
-                href
-                id="lastPage"
-                @click.prevent="getPageResults(pageCount)"
-            >
-                <font-awesome-icon
-                    :icon="['fas', 'angle-double-right']"
-                    title="First Page"
-                    aria-hidden="true"
-                    aria-label="Last Page"
-                    class="icon"
-                />
-            </a>
             <label for="filter">Filter</label>
             <input
                 type="text"
@@ -132,6 +144,7 @@
                 >
                     <td v-if="rowIdentifier">
                         <a
+                            v-if="!isReadOnly"
                             href
                             :id="'edit-' + entry[`${rowIdentifier}`]"
                             @click.stop.prevent="
@@ -142,11 +155,11 @@
                         {{ entry[`${rowIdentifier}`] }}
                     </td>
 
-                    <td v-for="key in columnList" :key="key">
-                        {{ entry[key] }}
+                    <td v-for="key in columns" :key="key.column">
+                        {{ key.format(entry[key.column]) }}
                     </td>
                 </tr>
-                <tr>
+                <tr v-if="!isReadOnly">
                     <td>
                         <button @click.prevent="addRecord">
                             <font-awesome-icon
@@ -170,7 +183,7 @@
                             <grid-detail
                                 v-if="selectedRecord"
                                 :record="selectedRecord"
-                                :fieldsToBind="columnList"
+                                :fieldsToBind="columns"
                                 @persisted-record="persistDetails"
                                 @cancel="cancelEdit"
                             />
@@ -207,11 +220,13 @@
         @Prop() private rowIdentifier!: string
         @Prop() private columns!: IColumnMetadata[]
         @Prop() private pageSpan!: number
-        @Prop({ default: 10 }) private recordsPerPage!: number
+        @Prop({ default: 10 }) private displayRecordsPerPage!: number
+        @Prop({ default: false }) private isReadOnly!: boolean
         //data
         timer: number | null = null
         selectedRowIds: number[] | null = null
         dataColumnsStaging: IColumnMetadata[] = []
+        columnList: string[] = []
         selectedRecordStaging: Record<string, any> | null = null
         filterTextBuffer = ""
         private filterTextDelayed: string | null = null
@@ -368,17 +383,19 @@
             }
         }
         selectRow(id: number) {
-            const row = document.getElementById("row" + id)
-            if (!this.selectedRowIds) this.selectedRowIds = []
-            if (row) {
-                if (!row.hasAttribute("class")) {
-                    row.setAttribute("class", "highlight")
-                    this.selectedRowIds.push(id)
-                } else {
-                    row.removeAttribute("class")
-                    this.selectedRowIds = this.selectedRowIds.filter(
-                        (v) => v !== id
-                    )
+            if (!this.isReadOnly) {
+                const row = document.getElementById("row" + id)
+                if (!this.selectedRowIds) this.selectedRowIds = []
+                if (row) {
+                    if (!row.hasAttribute("class")) {
+                        row.setAttribute("class", "highlight")
+                        this.selectedRowIds.push(id)
+                    } else {
+                        row.removeAttribute("class")
+                        this.selectedRowIds = this.selectedRowIds.filter(
+                            (v) => v !== id
+                        )
+                    }
                 }
             }
         }
@@ -427,11 +444,14 @@
             ) {
                 const fields: IColumnMetadata[] = []
                 const record = this.data[0]
-                Object.keys(record).forEach((k: string) => {
+                Object.keys(record).forEach((k: string, i: number) => {
                     const columnMedata: IColumnMetadata = {
                         column: k,
                         isNumeric: record[k].isNumeric(),
-                        validation: null
+                        format: (value: string) => {
+                            return value
+                        },
+                        order: i
                     }
                     fields.push(columnMedata)
                 })
@@ -560,8 +580,11 @@
             )
             return [...intersection]
         }
-        get columnList(): string[] {
-            return this.dataColumns.map((x) => x.column)
+        get recordsPerPage() {
+            if (this.displayRecordsPerPage === 0) {
+                this.currentPage = 1
+                return this.data.length
+            } else return this.displayRecordsPerPage
         }
 
         //lifecycle
@@ -572,6 +595,7 @@
             //Add sorting for the key row if present
             if (this.rowIdentifier && this.rowIdentifier.length > 0)
                 this.sortOrders[this.rowIdentifier] = -1
+            this.columnList = this.dataColumns.map((x) => x.column)
         }
         updated() {
             for (let i = 0; i < this.selectedDisplayRowIds.length; i++) {
