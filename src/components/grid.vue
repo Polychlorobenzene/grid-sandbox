@@ -183,7 +183,7 @@
                             <grid-detail
                                 v-if="selectedRecord"
                                 :record="selectedRecord"
-                                :fieldsToBind="columns"
+                                :fieldsToBind="dataColumns"
                                 @persisted-record="persistDetails"
                                 @cancel="cancelEdit"
                             />
@@ -328,10 +328,12 @@
                     (this.recordsPerPage - 1)
                 this.data.splice(position, 0, record)
             }
-            const link = document.getElementById("edit-" + this.rowIdToEdit)
-            if (link) {
-                link.innerText = "editing"
-            }
+            this.$nextTick().then(() => {
+                const link = document.getElementById("edit-" + newId)
+                if (link) {
+                    link.innerText = "editing"
+                }
+            })
             this.isRowEdit = true
             this.isRecordAdded = true
             this.rowIdToEdit = newId
@@ -350,6 +352,12 @@
             if (this.selectedRecord) {
                 const id = this.selectedRecord[this.rowIdentifier]
                 this.editRecord(id)
+                if (this.isRecordAdded) {
+                    if (this.selectedRowIds) this.selectedRowIds?.push(id)
+                    else this.selectedRowIds = [id]
+                    this.deleteSelected()
+                    this.isRecordAdded = false
+                }
             }
         }
 
@@ -457,6 +465,11 @@
                 })
                 this.dataColumnsStaging = fields
             }
+            //set displayName if not set
+            this.dataColumnsStaging = this.dataColumnsStaging.map((i) => {
+                i.displayName = i.displayName ? i.displayName : i.column
+                return i
+            })
             return this.dataColumnsStaging
         }
         get displayData(): any[] {
@@ -595,7 +608,9 @@
             //Add sorting for the key row if present
             if (this.rowIdentifier && this.rowIdentifier.length > 0)
                 this.sortOrders[this.rowIdentifier] = -1
-            this.columnList = this.dataColumns.map((x) => x.column)
+            this.columnList = this.dataColumns.map((x) =>
+                x.displayName ? x.displayName : x.column
+            )
         }
         updated() {
             for (let i = 0; i < this.selectedDisplayRowIds.length; i++) {

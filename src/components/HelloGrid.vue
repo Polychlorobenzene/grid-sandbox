@@ -53,11 +53,13 @@
                     format: (value: string) => {
                         return value
                     },
+                    isRequired: true,
                     order: 1
                 },
                 {
                     column: "Name",
                     isNumeric: false,
+                    isRequired: true,
                     format: (value: string) => {
                         return value
                     },
@@ -65,6 +67,7 @@
                 },
                 {
                     column: "Melting_Point",
+                    displayName: "Melting Point",
                     isNumeric: true,
                     format: (value: string) => {
                         return value
@@ -73,6 +76,7 @@
                 },
                 {
                     column: "Boiling_Point",
+                    displayName: "Boiling Point",
                     isNumeric: true,
                     format: (value: string) => {
                         return value

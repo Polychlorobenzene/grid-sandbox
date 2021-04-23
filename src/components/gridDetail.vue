@@ -1,16 +1,20 @@
 <template>
     <div id="detail">
+        <div v-if="showEmptyMessage" class="emptyMessage">
+            {{ requiredFieldsEmptyMessage }}
+        </div>
         <div v-for="field in fieldsToBind" :key="field.column">
             <span>
-                <label :for="field.column">{{ field.column }}</label>
+                <label :for="field.column">{{ field.displayName }}</label>
                 <currency-input
                     v-if="field.isCurrency"
                     :id="field.column"
                     v-model="recordToBind[field.column]"
+                    :required="field.isRequired"
                 />
                 <select
                     v-else-if="field.isSelect"
-                    :name="field.column"
+                    :name="field.displayName"
                     :id="field.column"
                     v-model="recordToBind[field.column]"
                 >
@@ -25,8 +29,9 @@
                     v-else
                     class="record"
                     type="text"
-                    :id="field"
+                    :id="field.column"
                     v-model="recordToBind[field.column]"
+                    :required="field.isRequired"
                 />
             </span>
         </div>
@@ -47,8 +52,8 @@
                 <currency-input :id="field" v-model="recordToBind[field]" />
             </span>
         </div> -->
-        <button @click.prevent="persistRecord()">Save</button>
-        <button @click.prevent="cancel()">Cancel</button>
+        <button @click.prevent="persistRecord">Save</button>
+        <button @click.prevent="cancel">Cancel</button>
     </div>
 </template>
 <script lang="ts">
@@ -66,9 +71,16 @@
         @Prop({ default: null })
         private fieldsToBind!: IColumnMetadata[] | null
         fields: string[] = []
-        @Emit("persisted-record")
+        requiredFieldsEmptyMessage = ""
+        showEmptyMessage = false
+        //@Emit("persisted-record")
         persistRecord() {
-            return this.recordToBind
+            if (this.isReady()) {
+                this.showEmptyMessage = false
+                this.requiredFieldsEmptyMessage = ""
+                this.$emit("persisted-record", this.recordToBind)
+                //return this.recordToBind
+            } else this.showEmptyMessage = true
         }
         @Emit("cancel")
         cancel() {
@@ -95,25 +107,44 @@
                 : false
             return hasCurrency
         }
-        get currencyFields() {
-            const fields = this.fieldsToBind
-                ? this.fieldsToBind
-                      .filter((obj) => {
-                          if (obj.isCurrency) return obj
-                      })
-                      .map((obj) => obj.column)
-                : null
-            return fields ? fields : []
-        }
-        get regularFields() {
-            const fields = this.fieldsToBind
-                ? this.fieldsToBind
-                      .filter((obj) => {
-                          if (!obj.isCurrency) return obj
-                      })
-                      .map((obj) => obj.column)
-                : null
-            return fields ? fields : this.fields
+        //Commented code here on purpose - rushed PR for dropdown
+        // get currencyFields() {
+        //     const fields = this.fieldsToBind
+        //         ? this.fieldsToBind
+        //               .filter((obj) => {
+        //                   if (obj.isCurrency) return obj
+        //               })
+        //               .map((obj) => obj.column)
+        //         : null
+        //     return fields ? fields : []
+        // }
+        // get regularFields() {
+        //     const fields = this.fieldsToBind
+        //         ? this.fieldsToBind
+        //               .filter((obj) => {
+        //                   if (!obj.isCurrency) return obj
+        //               })
+        //               .map((obj) => obj.column)
+        //         : null
+        //     return fields ? fields : this.fields
+        // }
+        isReady(): boolean {
+            const requiredFields = document.querySelectorAll("[required]")
+            const emptyFields: string[] = []
+            let isIncomplete = false
+            requiredFields.forEach((element) => {
+                const el = element as HTMLInputElement
+                if (el && (!el.value || el.value.length <= 0)) {
+                    isIncomplete = true
+                    el.classList.add("empty")
+                    emptyFields.push(el.id)
+                } else el.classList.remove("empty")
+            })
+            if (emptyFields.length > 0) {
+                this.requiredFieldsEmptyMessage = `Please add values for the following field(s):${emptyFields.join()}`
+            }
+
+            return !isIncomplete
         }
         mounted() {
             if (!this.fieldsToBind || this.fieldsToBind.length < 1) {
@@ -127,4 +158,13 @@
         }
     }
 </script>
-<style scoped></style>
+<style scoped>
+    .empty {
+        border-color: red;
+        border-width: 2px;
+    }
+    .emptyMessage {
+        font-size: 0.5em;
+        color: red;
+    }
+</style>
