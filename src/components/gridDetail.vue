@@ -29,6 +29,7 @@
                     v-else
                     class="record"
                     type="text"
+                    :maxlength="field.maxLength ? field.maxLength : -1"
                     :id="field.column"
                     v-model="recordToBind[field.column]"
                     :required="field.isRequired"

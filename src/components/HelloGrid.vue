@@ -50,6 +50,7 @@
                 {
                     column: "Symbol",
                     isNumeric: false,
+                    maxLength: 2,
                     format: (value: string) => {
                         return value
                     },
